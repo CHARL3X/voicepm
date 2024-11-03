@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VoicePM - Voice-to-Task Converter</title>
+    <title>Voxify - AI-Powered Voice-to-Task Revolution</title>
     <script src="https://unpkg.com/feather-icons"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -426,13 +426,16 @@
     <div class="container">
         <header class="app-header">
             <h1 class="app-title">
-                VoicePM
+                Voxify
                 <span id="modeBadge" class="mode-badge demo">
                     <i data-feather="radio"></i>
                     <span>Connecting...</span>
                 </span>
             </h1>
-            <p class="app-description">Transform your voice memos into organized tasks and action items.</p>
+            <p class="app-description">
+                Transform Your Voice into Action. Harness AI-powered intelligence to convert voice memos into 
+                beautifully organized project plans in seconds. Say goodbye to manual task management.
+            </p>
         </header>
 
         <div id="uploadArea" class="upload-area">
@@ -478,6 +481,7 @@
                 this.setupEventListeners();
                 this.checkBackendHealth();
                 this.initializeAnimations();
+                this.setupHeightAdjustment();
             }
 
             setupElements() {
@@ -490,8 +494,32 @@
                 };
             }
 
+            setupHeightAdjustment() {
+                // Function to send height to parent
+                const sendHeight = () => {
+                    const height = document.documentElement.scrollHeight;
+                    window.parent.postMessage({ type: 'setHeight', height }, '*');
+                };
+
+                // Send height on initial load
+                sendHeight();
+
+                // Send height on any content changes
+                const observer = new MutationObserver(sendHeight);
+                observer.observe(document.body, {
+                    childList: true,
+                    subtree: true,
+                    attributes: true
+                });
+
+                // Send height on window resize
+                window.addEventListener('resize', sendHeight);
+
+                // Send height after images load
+                window.addEventListener('load', sendHeight);
+            }
+
             initializeAnimations() {
-                // Add intersection observer for smooth scroll animations
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
