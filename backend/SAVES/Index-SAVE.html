@@ -24,24 +24,6 @@
             </p>
         </header>
 
-        <div class="features-grid">
-            <div class="feature-card">
-                <i data-feather="mic" class="feature-icon"></i>
-                <h3>Speak Naturally</h3>
-                <p>Record your thoughts on the go. Our AI understands context, tone, and priorities.</p>
-            </div>
-            <div class="feature-card">
-                <i data-feather="cpu" class="feature-icon"></i>
-                <h3>AI Magic</h3>
-                <p>Watch as advanced algorithms transform your voice into structured, actionable insights.</p>
-            </div>
-            <div class="feature-card">
-                <i data-feather="check-circle" class="feature-icon"></i>
-                <h3>Instant Organization</h3>
-                <p>Get perfectly formatted outputs in seconds - exactly the way you need them.</p>
-            </div>
-        </div>
-
         <div class="progress-steps">
             <div class="step active">
                 <div class="step-number">1</div>
@@ -67,7 +49,7 @@
             <div class="format-grid">
                 <div class="format-card active" data-format="tasks">
                     <div class="format-preview">
-                        <img src="static/images/task-preview.svg" alt="Task List Preview">
+                        <img src="static/images/task-preview.png" alt="Task List Preview">
                         <div class="preview-overlay">
                             <span>See Example</span>
                         </div>
@@ -94,7 +76,7 @@
                 </div>
                 <div class="format-card pro" data-format="roadmap">
                     <div class="format-preview">
-                        <img src="static/images/roadmap-preview.svg" alt="Strategic Roadmap Preview">
+                        <img src="static/images/roadmap-preview.png" alt="Strategic Roadmap Preview">
                         <div class="preview-overlay">
                             <span>See Example</span>
                         </div>
@@ -121,7 +103,7 @@
                 </div>
                 <div class="format-card pro" data-format="process">
                     <div class="format-preview">
-                        <img src="static/images/process-preview.svg" alt="Process Documentation Preview">
+                        <img src="static/images/process-preview.png" alt="Process Documentation Preview">
                         <div class="preview-overlay">
                             <span>See Example</span>
                         </div>
@@ -150,7 +132,7 @@
         </div>
 
         <div id="uploadArea" class="upload-area">
-            <input type="file" id="fileInput" class="file-input" accept=".mp3,audio/mp3,.m4a,audio/m4a,.wav,audio/wav,audio/x-m4a">
+            <input type="file" id="fileInput" class="file-input" accept="audio/*">
             <i data-feather="upload-cloud" class="upload-icon"></i>
             <p class="upload-text">Start Your Productivity Revolution</p>
             <p class="upload-subtext">Drop your voice memo or click to upload (MP3, M4A, WAV supported)</p>
@@ -166,6 +148,24 @@
             <!-- Audio files will be listed here -->
         </div>
 
+        <div class="features-grid">
+            <div class="feature-card">
+                <i data-feather="mic" class="feature-icon"></i>
+                <h3>Speak Naturally</h3>
+                <p>Record your thoughts on the go. Our AI understands context, tone, and priorities.</p>
+            </div>
+            <div class="feature-card">
+                <i data-feather="cpu" class="feature-icon"></i>
+                <h3>AI Magic</h3>
+                <p>Watch as advanced algorithms transform your voice into structured, actionable insights.</p>
+            </div>
+            <div class="feature-card">
+                <i data-feather="check-circle" class="feature-icon"></i>
+                <h3>Instant Organization</h3>
+                <p>Get perfectly formatted outputs in seconds - exactly the way you need them.</p>
+            </div>
+        </div>
+
         <div class="social-proof">
             <h2 class="social-proof-header">Loved by Productive Teams</h2>
             <p class="social-proof-subtext">Join thousands of professionals who've revolutionized their workflow</p>
@@ -177,7 +177,7 @@
                     </div>
                     <div class="testimonial-author">
                         <div class="author-avatar">
-                            <img src="static/images/avatar1.svg" alt="Sarah Chen">
+                            <img src="static/images/avatar1.jpg" alt="Sarah Chen">
                         </div>
                         <div class="author-info">
                             <div class="author-name">Sarah Chen</div>
@@ -191,7 +191,7 @@
                     </div>
                     <div class="testimonial-author">
                         <div class="author-avatar">
-                            <img src="static/images/avatar2.svg" alt="Marcus Johnson">
+                            <img src="static/images/avatar2.jpg" alt="Marcus Johnson">
                         </div>
                         <div class="author-info">
                             <div class="author-name">Marcus Johnson</div>
@@ -205,7 +205,7 @@
                     </div>
                     <div class="testimonial-author">
                         <div class="author-avatar">
-                            <img src="static/images/avatar3.svg" alt="Emily Rodriguez">
+                            <img src="static/images/avatar3.jpg" alt="Emily Rodriguez">
                         </div>
                         <div class="author-info">
                             <div class="author-name">Emily Rodriguez</div>
@@ -233,86 +233,8 @@
             feather.replace();
         });
     </script>
-
-    <style>
-        /* Format Selector Styles */
-        .format-selector {
-            margin: 3rem 0;
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        .format-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 1.75rem;
-            color: var(--text-primary);
-            margin-bottom: 2rem;
-        }
-
-        .format-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .format-card {
-            background: var(--bg-primary);
-            border-radius: var(--radius-lg);
-            padding: 2rem;
-            border: 1px solid var(--border-color);
-            transition: var(--transition);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .format-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(109, 90, 255, 0.1), rgba(167, 139, 250, 0.1));
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .format-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--primary-color);
-            box-shadow: var(--shadow-lg), var(--glow);
-        }
-
-        .format-card:hover::before {
-            opacity: 1;
-        }
-
-        .format-card.active {
-            border-color: var(--primary-color);
-            box-shadow: var(--shadow-lg), var(--glow);
-        }
-
-        .format-card.pro {
-            border-color: #a78bfa;
-        }
-
-        .format-card.coming-soon {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        .format-icon {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-        }
-
-        .format-icon i {
-            width: 32px;
-            height: 32px;
+</body>
+</html>
             color: var(--primary-color);
         }
 

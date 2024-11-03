@@ -7,7 +7,9 @@ services:
     envVars:
       - key: OPENAI_API_KEY
         sync: false
-      - key: ANTHROPIC_API_KEY
+      - key: OPENROUTER_API_KEY
         sync: false
       - key: CORS_ORIGINS
-        value: '["https://www.charlestobin.com"]'
+        value: '["https://www.charlestobin.com", "https://editor.wix.com", "https://voicepm-backend.onrender.com"]'
+    healthCheckPath: /health
+    autoDeploy: true

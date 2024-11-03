@@ -1,11 +1,14 @@
 class VoicePM {
     constructor() {
+        // Get API URL from environment or default to Render.com deployment
         this.API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
             ? 'http://localhost:8000'
             : 'https://voicepm-backend.onrender.com';
         this.isBackendAvailable = false;
         this.isDemoMode = false;
         this.selectedFormat = 'tasks'; // Default format
+        this.maxRetries = 3; // Maximum number of retries for failed requests
+        this.healthCheckInterval = null;
         
         this.elements = {
             uploadArea: document.getElementById('uploadArea'),
@@ -18,6 +21,7 @@ class VoicePM {
         
         // Debug log
         console.log('VoicePM initializing...');
+        console.log('API URL:', this.API_URL);
         
         // Bind methods to preserve 'this' context
         this.handleFormatSelect = this.handleFormatSelect.bind(this);
@@ -29,10 +33,13 @@ class VoicePM {
         this.checkBackendHealth();
         this.initializeAnimations();
         
+        // Start periodic health checks
+        this.healthCheckInterval = setInterval(() => this.checkBackendHealth(), 30000);
+        
         // Debug log
         console.log('VoicePM initialized with format:', this.selectedFormat);
     }
-    
+
     initializeEventListeners() {
         // Format selection handling
         const formatCards = document.querySelectorAll('.format-card');
@@ -221,13 +228,21 @@ class VoicePM {
         const files = e.target.files;
         this.handleFiles(files);
     }
-    
+
     handleFiles(files) {
         if (files.length === 0) return;
         
         const file = files[0];
-        if (!file.type.startsWith('audio/')) {
-            this.showStatus('Please upload an audio file', 'error');
+        const maxSize = 25 * 1024 * 1024; // 25MB limit
+        
+        // Enhanced file validation
+        if (!file.type.match(/^audio\/(mp3|mpeg|wav|x-m4a)$/)) {
+            this.showStatus('Please upload an MP3, M4A, or WAV file', 'error');
+            return;
+        }
+
+        if (file.size > maxSize) {
+            this.showStatus('File size must be under 25MB', 'error');
             return;
         }
 
@@ -269,7 +284,7 @@ class VoicePM {
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
-    
+
     addAudioFile(file) {
         const audioItem = document.createElement('div');
         audioItem.className = 'audio-item';
@@ -327,18 +342,17 @@ class VoicePM {
         feather.replace();
     }
 
-    async processAudio(file, audioItem, button) {
+    async processAudio(file, audioItem, button, retryCount = 0) {
         button.disabled = true;
         button.innerHTML = `
             <div class="loading"></div>
-            <span>Processing</span>
+            <span>Processing${retryCount > 0 ? ` (Retry ${retryCount}/${this.maxRetries})` : ''}</span>
         `;
         
         try {
             const formData = new FormData();
             formData.append('file', file);
             
-            // Update endpoint mapping to match backend routes
             const endpoints = {
                 tasks: '/process-audio',
                 roadmap: '/process-audio/roadmap',
@@ -350,7 +364,7 @@ class VoicePM {
                 throw new Error('Unsupported format');
             }
 
-            console.log('Processing with endpoint:', endpoint); // Debug log
+            console.log('Processing with endpoint:', endpoint);
 
             const response = await fetch(`${this.API_URL}${endpoint}`, {
                 method: 'POST',
@@ -359,7 +373,16 @@ class VoicePM {
             
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.detail || 'Processing failed');
+                const errorMessage = errorData.detail || 'Processing failed';
+                
+                // Retry logic for 5xx errors
+                if (response.status >= 500 && retryCount < this.maxRetries) {
+                    console.log(`Retrying request (${retryCount + 1}/${this.maxRetries})...`);
+                    await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+                    return this.processAudio(file, audioItem, button, retryCount + 1);
+                }
+                
+                throw new Error(errorMessage);
             }
             
             const data = await response.json();
@@ -372,10 +395,23 @@ class VoicePM {
             }
         } catch (error) {
             console.error('Error processing audio:', error);
-            this.showStatus(error.message || 'Error processing audio file', 'error');
+            
+            // Enhanced error messages
+            let errorMessage = 'Error processing audio file';
+            if (error.message.includes('Failed to fetch')) {
+                errorMessage = 'Unable to connect to server. Please check your internet connection.';
+            } else if (error.message.includes('NetworkError')) {
+                errorMessage = 'Network error occurred. Please try again.';
+            } else if (error.message.includes('timeout')) {
+                errorMessage = 'Request timed out. Please try again.';
+            } else {
+                errorMessage = error.message; // Use the actual error message
+            }
+            
+            this.showStatus(errorMessage, 'error');
             button.innerHTML = `
                 <i data-feather="cpu"></i>
-                <span>Process</span>
+                <span>Retry Processing</span>
             `;
             button.disabled = false;
             feather.replace();
@@ -559,23 +595,41 @@ class VoicePM {
             </ul>
         `;
     }
-    
+
     async checkBackendHealth() {
         try {
-            const response = await fetch(`${this.API_URL}/health`);
+            console.log('Checking backend health...'); // Debug log
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
+            const response = await fetch(`${this.API_URL}/health`, {
+                signal: controller.signal,
+                headers: {
+                    'Accept': 'application/json',
+                    'Cache-Control': 'no-cache'
+                }
+            });
+
+            clearTimeout(timeoutId);
+            console.log('Health check response:', response.status); // Debug log
+
             if (response.ok) {
                 const data = await response.json();
+                console.log('Health check data:', data); // Debug log
+                
                 this.isBackendAvailable = true;
                 this.isDemoMode = data.status === 'demo';
                 
                 if (this.isDemoMode) {
+                    console.log('Setting demo mode badge'); // Debug log
                     this.elements.modeBadge.className = 'mode-badge demo';
                     this.elements.modeBadge.innerHTML = `
                         <i data-feather="radio"></i>
                         <span>Demo Mode</span>
                     `;
-                    this.showStatus(data.message, 'warning');
+                    this.showStatus('Running in demo mode - some features may be limited', 'warning');
                 } else {
+                    console.log('Setting production mode badge'); // Debug log
                     this.elements.modeBadge.className = 'mode-badge production';
                     this.elements.modeBadge.innerHTML = `
                         <i data-feather="zap"></i>
@@ -583,18 +637,32 @@ class VoicePM {
                     `;
                 }
             } else {
+                console.error('Health check failed:', response.status); // Debug log
                 throw new Error('Backend health check failed');
             }
         } catch (error) {
             console.error('API health check failed:', error);
-            this.showStatus('Server connection failed', 'error');
+            
+            // Don't show error message for periodic checks
+            if (!this.isBackendAvailable) {
+                this.showStatus('Unable to connect to server. Please try again later.', 'error');
+            }
+            
             this.elements.modeBadge.className = 'mode-badge offline';
             this.elements.modeBadge.innerHTML = `
                 <i data-feather="wifi-off"></i>
                 <span>Offline</span>
             `;
+        } finally {
+            feather.replace();
         }
-        feather.replace();
+    }
+
+    // Cleanup method
+    destroy() {
+        if (this.healthCheckInterval) {
+            clearInterval(this.healthCheckInterval);
+        }
     }
 }
 
@@ -602,4 +670,11 @@ class VoicePM {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing VoicePM...');
     window.voicePM = new VoicePM();
+});
+
+// Cleanup on page unload
+window.addEventListener('unload', () => {
+    if (window.voicePM) {
+        window.voicePM.destroy();
+    }
 });

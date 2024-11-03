@@ -11,16 +11,35 @@ from utils import get_demo_tasks, get_demo_roadmap, get_demo_process_doc
 
 router = APIRouter()
 
+ALLOWED_MIME_TYPES = [
+    'audio/mp3',
+    'audio/mpeg',
+    'audio/wav',
+    'audio/x-m4a',  # Added for iOS M4A support
+    'audio/m4a'     # Alternative M4A MIME type
+]
+
 @router.post("/process-audio", response_model=ProcessedOutput)
 async def process_audio_to_tasks(
     request: Request,
     file: UploadFile = File(...)
 ):
     """Process an audio file into tasks and return structured information."""
-    if not file.content_type.startswith('audio/'):
+    # Enhanced MIME type validation
+    if file.content_type not in ALLOWED_MIME_TYPES:
         raise HTTPException(
             status_code=400,
-            detail="File must be an audio file"
+            detail=f"Unsupported file type. Please upload MP3, M4A, or WAV files. Received: {file.content_type}"
+        )
+    
+    # Check file size (25MB limit)
+    file_size = 0
+    content = await file.read()
+    file_size = len(content)
+    if file_size > 25 * 1024 * 1024:  # 25MB in bytes
+        raise HTTPException(
+            status_code=400,
+            detail="File size must be under 25MB"
         )
     
     if request.app.state.demo_mode:
@@ -30,7 +49,6 @@ async def process_audio_to_tasks(
     temp_path = f"temp_{file.filename}"
     try:
         with open(temp_path, "wb") as buffer:
-            content = await file.read()
             buffer.write(content)
         
         # Step 1: Transcribe audio using OpenAI's Whisper
@@ -47,9 +65,14 @@ async def process_audio_to_tasks(
             )
             
         # Step 2: Process transcript into tasks
-        structured_data = await process_transcript_to_tasks(transcript.text, request.app.state.openrouter_client)
-        
-        return ProcessedOutput(**structured_data)
+        try:
+            structured_data = await process_transcript_to_tasks(transcript.text, request.app.state.openrouter_client)
+            return ProcessedOutput(**structured_data)
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Error processing transcript: {str(e)}"
+            )
         
     except Exception as e:
         raise HTTPException(
@@ -67,10 +90,21 @@ async def process_audio_to_roadmap(
     file: UploadFile = File(...)
 ):
     """Process an audio file into a strategic roadmap."""
-    if not file.content_type.startswith('audio/'):
+    # Enhanced MIME type validation
+    if file.content_type not in ALLOWED_MIME_TYPES:
         raise HTTPException(
             status_code=400,
-            detail="File must be an audio file"
+            detail=f"Unsupported file type. Please upload MP3, M4A, or WAV files. Received: {file.content_type}"
+        )
+    
+    # Check file size (25MB limit)
+    file_size = 0
+    content = await file.read()
+    file_size = len(content)
+    if file_size > 25 * 1024 * 1024:  # 25MB in bytes
+        raise HTTPException(
+            status_code=400,
+            detail="File size must be under 25MB"
         )
     
     if request.app.state.demo_mode:
@@ -80,7 +114,6 @@ async def process_audio_to_roadmap(
     temp_path = f"temp_{file.filename}"
     try:
         with open(temp_path, "wb") as buffer:
-            content = await file.read()
             buffer.write(content)
         
         # Step 1: Transcribe audio using OpenAI's Whisper
@@ -97,9 +130,14 @@ async def process_audio_to_roadmap(
             )
             
         # Step 2: Process transcript into roadmap
-        structured_data = await process_transcript_to_roadmap(transcript.text, request.app.state.openrouter_client)
-        
-        return StrategicRoadmap(**structured_data)
+        try:
+            structured_data = await process_transcript_to_roadmap(transcript.text, request.app.state.openrouter_client)
+            return StrategicRoadmap(**structured_data)
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Error processing transcript: {str(e)}"
+            )
         
     except Exception as e:
         raise HTTPException(
@@ -117,10 +155,21 @@ async def process_audio_to_process_doc(
     file: UploadFile = File(...)
 ):
     """Process an audio file into a process document."""
-    if not file.content_type.startswith('audio/'):
+    # Enhanced MIME type validation
+    if file.content_type not in ALLOWED_MIME_TYPES:
         raise HTTPException(
             status_code=400,
-            detail="File must be an audio file"
+            detail=f"Unsupported file type. Please upload MP3, M4A, or WAV files. Received: {file.content_type}"
+        )
+    
+    # Check file size (25MB limit)
+    file_size = 0
+    content = await file.read()
+    file_size = len(content)
+    if file_size > 25 * 1024 * 1024:  # 25MB in bytes
+        raise HTTPException(
+            status_code=400,
+            detail="File size must be under 25MB"
         )
     
     if request.app.state.demo_mode:
@@ -130,7 +179,6 @@ async def process_audio_to_process_doc(
     temp_path = f"temp_{file.filename}"
     try:
         with open(temp_path, "wb") as buffer:
-            content = await file.read()
             buffer.write(content)
         
         # Step 1: Transcribe audio using OpenAI's Whisper
@@ -147,9 +195,14 @@ async def process_audio_to_process_doc(
             )
             
         # Step 2: Process transcript into process doc
-        structured_data = await process_transcript_to_process_doc(transcript.text, request.app.state.openrouter_client)
-        
-        return ProcessDocument(**structured_data)
+        try:
+            structured_data = await process_transcript_to_process_doc(transcript.text, request.app.state.openrouter_client)
+            return ProcessDocument(**structured_data)
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Error processing transcript: {str(e)}"
+            )
         
     except Exception as e:
         raise HTTPException(

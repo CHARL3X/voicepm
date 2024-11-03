@@ -5,16 +5,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from openai import OpenAI
 from pathlib import Path
-import sys
-
-# Add the backend directory to Python path
-backend_dir = Path(__file__).parent
-if str(backend_dir) not in sys.path:
-    sys.path.append(str(backend_dir))
-
 from config import settings
-from routes.audio import router as audio_router
-from routes.health import router as health_router
+from routes import audio_router, health_router
 from services.audio import create_openrouter_client
 
 # Get the project root directory
@@ -22,14 +14,13 @@ ROOT_DIR = Path(__file__).parent.parent
 
 app = FastAPI(title="VoicePM API", version="1.0.0")
 
-# Enable CORS with more permissive settings for local development
+# Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # More permissive for development
+    allow_origins=["http://localhost:8000", "http://127.0.0.1:8000", "https://voxify.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=["*"]
 )
 
 # Mount static files
@@ -54,14 +45,28 @@ else:
     print("\n=== Running in PRODUCTION MODE ===")
     print("API clients initialized successfully\n")
 
-# Include routers
-app.include_router(audio_router)
-app.include_router(health_router)
+# Include routers with dependencies
+async def get_demo_mode():
+    return DEMO_MODE
 
-# Make dependencies available to routes
-app.state.demo_mode = DEMO_MODE
-app.state.openai_client = openai_client
-app.state.openrouter_client = openrouter_client
+async def get_openai_client():
+    return openai_client
+
+async def get_openrouter_client():
+    return openrouter_client
+
+app.include_router(
+    audio_router,
+    dependencies=[
+        Depends(get_demo_mode),
+        Depends(get_openai_client),
+        Depends(get_openrouter_client)
+    ]
+)
+app.include_router(
+    health_router,
+    dependencies=[Depends(get_demo_mode)]
+)
 
 @app.get("/")
 async def read_root():

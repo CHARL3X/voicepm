@@ -37,16 +37,27 @@ async def process_transcript_to_tasks(transcript: str, openrouter_client: OpenAI
         
         # Extract JSON from response
         response_text = response.choices[0].message.content
+        print("Task API Response:", response_text)  # Debug log
+        
         json_start = response_text.find('{')
         json_end = response_text.rfind('}') + 1
         
         if json_start >= 0 and json_end > json_start:
             json_str = response_text[json_start:json_end]
-            return json.loads(json_str)
+            try:
+                return json.loads(json_str)
+            except json.JSONDecodeError as e:
+                print(f"JSON Decode Error: {str(e)}")
+                print(f"Attempted to parse: {json_str}")
+                raise HTTPException(
+                    status_code=500,
+                    detail="Error parsing AI response format"
+                )
         else:
             raise ValueError("No valid JSON found in response")
             
     except Exception as e:
+        print(f"Error in process_transcript_to_tasks: {str(e)}")
         raise HTTPException(
             status_code=500,
             detail=f"Error processing transcript: {str(e)}"
@@ -55,6 +66,8 @@ async def process_transcript_to_tasks(transcript: str, openrouter_client: OpenAI
 async def process_transcript_to_roadmap(transcript: str, openrouter_client: OpenAI) -> dict:
     """Process the transcript into a strategic roadmap using Claude 3.5 Sonnet."""
     try:
+        print("Starting roadmap processing...")  # Debug log
+        
         response = openrouter_client.chat.completions.create(
             model="anthropic/claude-3.5-sonnet",
             messages=[
@@ -75,16 +88,30 @@ async def process_transcript_to_roadmap(transcript: str, openrouter_client: Open
         
         # Extract JSON from response
         response_text = response.choices[0].message.content
+        print("Roadmap API Response:", response_text)  # Debug log
+        
         json_start = response_text.find('{')
         json_end = response_text.rfind('}') + 1
         
         if json_start >= 0 and json_end > json_start:
             json_str = response_text[json_start:json_end]
-            return json.loads(json_str)
+            try:
+                parsed_data = json.loads(json_str)
+                print("Successfully parsed JSON:", parsed_data)  # Debug log
+                return parsed_data
+            except json.JSONDecodeError as e:
+                print(f"JSON Decode Error: {str(e)}")
+                print(f"Attempted to parse: {json_str}")
+                raise HTTPException(
+                    status_code=500,
+                    detail="Error parsing AI response format"
+                )
         else:
+            print("No JSON found in response")  # Debug log
             raise ValueError("No valid JSON found in response")
             
     except Exception as e:
+        print(f"Error in process_transcript_to_roadmap: {str(e)}")
         raise HTTPException(
             status_code=500,
             detail=f"Error processing transcript: {str(e)}"
@@ -113,16 +140,27 @@ async def process_transcript_to_process_doc(transcript: str, openrouter_client: 
         
         # Extract JSON from response
         response_text = response.choices[0].message.content
+        print("Process Doc API Response:", response_text)  # Debug log
+        
         json_start = response_text.find('{')
         json_end = response_text.rfind('}') + 1
         
         if json_start >= 0 and json_end > json_start:
             json_str = response_text[json_start:json_end]
-            return json.loads(json_str)
+            try:
+                return json.loads(json_str)
+            except json.JSONDecodeError as e:
+                print(f"JSON Decode Error: {str(e)}")
+                print(f"Attempted to parse: {json_str}")
+                raise HTTPException(
+                    status_code=500,
+                    detail="Error parsing AI response format"
+                )
         else:
             raise ValueError("No valid JSON found in response")
             
     except Exception as e:
+        print(f"Error in process_transcript_to_process_doc: {str(e)}")
         raise HTTPException(
             status_code=500,
             detail=f"Error processing transcript: {str(e)}"

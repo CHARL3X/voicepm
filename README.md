@@ -1,257 +1,112 @@
-# VoicePM - Voice Project Manager
+# Voxify
 
-VoicePM is a web application that converts voice memos into structured project management artifacts. Upload your audio recordings, and the system will automatically extract tasks, priorities, next steps, and important notes using advanced AI processing.
+Voxify is a web application that transforms voice memos into structured content using AI. It supports three output formats:
+- Task Lists (Free): Converts audio into prioritized tasks with context
+- Strategic Roadmaps (Pro): Generates comprehensive project roadmaps
+- Process Documentation (Pro): Creates detailed process guides
 
-## Features
+## Local Development
 
-- Audio file upload (supports MP3, M4A, WAV, and other formats)
-- Automatic transcription using OpenAI Whisper
-- Task extraction and organization using Claude
-- Priority-based task categorization
-- Clean, responsive user interface
-- Drag-and-drop file upload support
-- Real-time processing status updates
-- Demo mode for testing without API keys
-- Wix integration support
+1. Clone the repository:
+```bash
+git clone https://github.com/CHARL3X/voicepm.git
+cd voicepm
+```
 
-## Deployment Options
+2. Set up Python environment:
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-### 1. Standalone Application
+3. Configure environment variables:
+```bash
+cp .env.example .env
+# Edit .env with your API keys
+```
 
-Run VoicePM as a standalone web application. See [Setup](#setup) below.
+4. Run the development server:
+```bash
+# IMPORTANT: Always run from the backend directory
+cd backend
+uvicorn main:app --reload
+```
 
-### 2. Wix Integration
+The application will be available at http://localhost:8000
 
-Embed VoicePM into your Wix website:
-1. Deploy the backend to a cloud platform
-2. Host the embed version
-3. Add to your Wix site via iFrame
+## Render.com Deployment
 
-See [WIX-INTEGRATION.md](./WIX-INTEGRATION.md) for detailed instructions.
+1. Fork the repository to your GitHub account
+
+2. Create a new Web Service on Render.com:
+   - Connect your GitHub repository
+   - Select the Python environment
+   - The build command and start command are already configured in render.yaml
+
+3. Configure environment variables in Render.com dashboard:
+   - OPENAI_API_KEY: Your OpenAI API key
+   - OPENROUTER_API_KEY: Your OpenRouter API key
+   - CORS_ORIGINS: Configure allowed origins
+
+4. Deploy:
+   - Render will automatically deploy when you push to the main branch
+   - The deployment typically takes 2-3 minutes
+
+## Environment Variables
+
+- `OPENAI_API_KEY`: Required for Whisper transcription
+- `OPENROUTER_API_KEY`: Required for Claude analysis
+- `CORS_ORIGINS`: JSON array of allowed origins
+
+### Demo Mode
+Set `OPENAI_API_KEY=demo_mode` to run in demo mode, which returns mock data instead of making API calls.
 
 ## Project Structure
 
 ```
 voicepm/
 ├── backend/
-│   ├── __init__.py      # Python package marker
-│   ├── main.py          # FastAPI application
-│   ├── config.py        # Configuration management
-│   ├── test_main.py     # Backend tests
-│   └── requirements.txt # Python dependencies
+│   ├── models/         # Data models
+│   ├── prompts/        # AI system prompts
+│   ├── routes/         # API endpoints
+│   ├── services/       # Business logic
+│   └── utils/          # Helper functions
 ├── static/
-│   ├── css/
-│   │   └── styles.css   # Application styles
-│   └── js/
-│       └── app.js       # Frontend JavaScript
-├── wix-embed/
-│   └── voicepm-embed.html  # Wix-ready version
-└── index.html          # Main HTML file
+│   ├── css/           # Stylesheets
+│   ├── js/            # Frontend scripts
+│   └── images/        # Static assets
+└── public/            # Wix integration files
 ```
 
-## Demo Mode vs Production Mode
+## API Endpoints
 
-The application can run in two modes:
-
-### Demo Mode
-- No API keys required
-- Returns mock data for testing the interface
-- Clearly marked with "[DEMO]" in responses
-- Perfect for initial testing and development
-
-### Production Mode
-- Requires valid OpenAI and Anthropic API keys
-- Performs real audio transcription and analysis
-- Provides actual task extraction from your voice memos
-
-## Setup
-
-### Prerequisites
-
-- Python 3.7+
-- OpenAI API key (for production mode)
-- Anthropic API key (for production mode)
-
-### Installation
-
-1. Clone the repository and navigate to the project directory:
-```bash
-cd voicepm
-```
-
-2. Create a virtual environment (recommended):
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install dependencies:
-```bash
-cd backend
-pip install -r requirements.txt
-```
-
-### Configuration
-
-1. Create a `.env` file in the backend directory:
-
-For Demo Mode:
-```env
-OPENAI_API_KEY=demo_mode
-ANTHROPIC_API_KEY=demo_mode
-CORS_ORIGINS=["http://localhost:8000"]
-```
-
-For Production Mode:
-```env
-OPENAI_API_KEY=your_openai_key_here
-ANTHROPIC_API_KEY=your_anthropic_key_here
-CORS_ORIGINS=["http://localhost:8000"]
-```
-
-### Running the Application
-
-1. Start the server:
-```bash
-cd backend
-python main.py
-```
-
-2. Open your browser and navigate to:
-```
-http://localhost:8000
-```
-
-The application will automatically detect if you're in demo or production mode based on your API keys. The mode is clearly displayed in the UI and all responses are appropriately labeled.
-
-## Cloud Deployment
-
-For production deployment, see:
-- [Render.com Deployment Guide](./docs/render-deployment.md)
-- [Heroku Deployment Guide](./docs/heroku-deployment.md)
-- [Wix Integration Guide](./WIX-INTEGRATION.md)
-
-## API Documentation
-
-### Endpoints
-
-#### POST /process-audio/
-Process an audio file and return structured information.
-
-**Request:**
-- Method: POST
-- Content-Type: multipart/form-data
-- Body: Form data with 'file' field containing the audio file
-
-**Response:**
-```json
-{
-    "tasks": [
-        {
-            "title": "Task description",
-            "priority": "High/Medium/Low",
-            "description": "Additional context"
-        }
-    ],
-    "next_steps": [
-        "Immediate action item"
-    ],
-    "notes": [
-        "Important context or information"
-    ]
-}
-```
-
-#### GET /health
-Check the API health status and mode.
-
-**Response:**
-```json
-{
-    "status": "demo",
-    "message": "Running in demo mode. Set valid API keys to enable real processing."
-}
-```
-
-or
-
-```json
-{
-    "status": "production",
-    "message": "Running in production mode with valid API keys"
-}
-```
-
-## Development Guidelines
-
-### Backend
-
-1. Code Style
-   - Follow PEP 8 guidelines
-   - Use type hints
-   - Document functions and classes
-   - Handle errors gracefully
-
-2. Error Handling
-   - Use appropriate HTTP status codes
-   - Provide meaningful error messages
-   - Log errors for debugging
-   - Clean up temporary files
-
-3. Configuration
-   - Use environment variables for sensitive data
-   - Keep configuration separate from code
-   - Validate configuration on startup
-
-### Frontend
-
-1. Code Organization
-   - Use classes for better organization
-   - Handle errors gracefully
-   - Show loading states
-   - Provide feedback to users
-
-2. User Experience
-   - Support drag and drop
-   - Show progress indicators
-   - Handle offline mode gracefully
-   - Provide clear error messages
-
-## Security Considerations
-
-1. API Keys
-   - Never commit API keys to version control
-   - Use environment variables
-   - Rotate keys regularly
-   - Use appropriate key permissions
-
-2. File Upload
-   - Validate file types
-   - Limit file sizes
-   - Clean up temporary files
-   - Scan for malware (in production)
-
-3. Production Deployment
-   - Use HTTPS
-   - Implement authentication
-   - Set up monitoring
-   - Configure proper logging
-
-## Testing
-
-Run backend tests:
-```bash
-cd backend
-pytest
-```
+- `GET /health`: Server status and mode
+- `POST /process-audio`: Convert to task list
+- `POST /process-audio/roadmap`: Generate roadmap
+- `POST /process-audio/process`: Create process doc
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+1. Create a feature branch:
+```bash
+git checkout -b feature/your-feature-name
+```
+
+2. Make your changes and commit:
+```bash
+git add .
+git commit -m "Description of changes"
+```
+
+3. Push to GitHub:
+```bash
+git push origin feature/your-feature-name
+```
+
+4. Create a Pull Request on GitHub
 
 ## License
 
-MIT License - See LICENSE file for details
+MIT License - see LICENSE file for details
