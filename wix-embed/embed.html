@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoicePM - Voice-to-Task Converter</title>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Modern CSS Reset */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Variables - Dark Theme */
+        :root {
+            --primary-color: #6d5aff;
+            --primary-hover: #5646ff;
+            --success-color: #00cc88;
+            --warning-color: #ffb347;
+            --error-color: #ff4d4d;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --bg-primary: #1a1b26;
+            --bg-secondary: #16171f;
+            --border-color: #2d3748;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --radius: 0.75rem;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .upload-area {
+            background: var(--bg-primary);
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius);
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            margin: 2rem 0;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .upload-icon {
+            width: 64px;
+            height: 64px;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .status {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius);
+            display: none;
+        }
+
+        .status.success {
+            background: rgba(0, 204, 136, 0.1);
+            color: var(--success-color);
+            display: block;
+        }
+
+        .status.error {
+            background: rgba(255, 77, 77, 0.1);
+            color: var(--error-color);
+            display: block;
+        }
+
+        .file-list {
+            margin-top: 2rem;
+        }
+
+        .file-item {
+            background: var(--bg-primary);
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .file-name {
+            color: var(--text-primary);
+        }
+
+        .file-size {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .mode-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-left: 0.75rem;
+            background: rgba(255, 179, 71, 0.1);
+            color: var(--warning-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">
+            VoicePM
+            <span class="mode-badge">
+                <i data-feather="radio"></i>
+                <span>Connecting...</span>
+            </span>
+        </h1>
+        <p class="subtitle">Transform your voice memos into organized tasks and action items.</p>
+        
+        <div class="upload-area" id="uploadArea">
+            <i data-feather="upload-cloud" class="upload-icon"></i>
+            <h2>Drop your audio file here</h2>
+            <p>or click to select (MP3, M4A, WAV supported)</p>
+            <input type="file" id="fileInput" accept="audio/*" style="display: none">
+        </div>
+
+        <div id="status" class="status"></div>
+        <div id="fileList" class="file-list"></div>
+    </div>
+
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+
+        class VoicePM {
+            constructor() {
+                this.API_URL = 'https://voicepm-backend.onrender.com';
+                this.setupElements();
+                this.setupEventListeners();
+                this.checkBackendHealth();
+            }
+
+            setupElements() {
+                this.elements = {
+                    uploadArea: document.getElementById('uploadArea'),
+                    fileInput: document.getElementById('fileInput'),
+                    status: document.getElementById('status'),
+                    fileList: document.getElementById('fileList'),
+                    modeBadge: document.querySelector('.mode-badge span')
+                };
+            }
+
+            setupEventListeners() {
+                this.elements.uploadArea.addEventListener('click', () => this.elements.fileInput.click());
+                this.elements.fileInput.addEventListener('change', (e) => this.handleFiles(e.target.files));
+                
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    this.elements.uploadArea.addEventListener(eventName, this.preventDefaults, false);
+                });
+
+                this.elements.uploadArea.addEventListener('drop', (e) => {
+                    const dt = e.dataTransfer;
+                    this.handleFiles(dt.files);
+                });
+            }
+
+            preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            async checkBackendHealth() {
+                try {
+                    const response = await fetch(`${this.API_URL}/health`);
+                    const data = await response.json();
+                    this.elements.modeBadge.textContent = data.status === 'demo' ? 'Demo Mode' : 'Connected';
+                } catch (error) {
+                    this.elements.modeBadge.textContent = 'Offline';
+                    this.showStatus('Cannot connect to server', 'error');
+                }
+            }
+
+            showStatus(message, type) {
+                this.elements.status.textContent = message;
+                this.elements.status.className = `status ${type}`;
+            }
+
+            async handleFiles(files) {
+                if (!files.length) return;
+                
+                const file = files[0];
+                if (!file.type.startsWith('audio/')) {
+                    this.showStatus('Please upload an audio file', 'error');
+                    return;
+                }
+
+                this.showStatus('Processing audio file...', 'success');
+
+                try {
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    const response = await fetch(`${this.API_URL}/process-audio/`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) throw new Error('Processing failed');
+
+                    const data = await response.json();
+                    this.showStatus('Processing complete!', 'success');
+                    this.displayResults(data);
+                } catch (error) {
+                    this.showStatus('Error processing file: ' + error.message, 'error');
+                }
+            }
+
+            displayResults(data) {
+                const resultsDiv = document.createElement('div');
+                resultsDiv.className = 'file-item';
+                resultsDiv.innerHTML = `
+                    <div>
+                        <h3>Tasks:</h3>
+                        <ul>
+                            ${data.tasks.map(task => `
+                                <li>${task.title} (${task.priority})</li>
+                            `).join('')}
+                        </ul>
+                        <h3>Next Steps:</h3>
+                        <ul>
+                            ${data.next_steps.map(step => `<li>${step}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                this.elements.fileList.insertBefore(resultsDiv, this.elements.fileList.firstChild);
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            window.voicePM = new VoicePM();
+        });
+    </script>
+</body>
+</html>
