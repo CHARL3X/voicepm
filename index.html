@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voxify - AI-Powered Voice-to-Task Revolution</title>
+    <title>Voxify - Voice to Anything, Powered by AI</title>
     <link rel="stylesheet" href="static/css/styles.css">
     <!-- Add Feather Icons for premium look -->
     <script src="https://unpkg.com/feather-icons"></script>
@@ -19,10 +19,135 @@
                 </span>
             </h1>
             <p class="app-description">
-                Transform Your Voice into Action. Harness AI-powered intelligence to convert voice memos into 
-                beautifully organized project plans in seconds. Say goodbye to manual task management.
+                Transform Your Voice into Actionable Content. Turn voice memos into perfectly structured 
+                tasks, roadmaps, and documentation in seconds with AI.
             </p>
         </header>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <i data-feather="mic" class="feature-icon"></i>
+                <h3>Speak Naturally</h3>
+                <p>Record your thoughts on the go. Our AI understands context, tone, and priorities.</p>
+            </div>
+            <div class="feature-card">
+                <i data-feather="cpu" class="feature-icon"></i>
+                <h3>AI Magic</h3>
+                <p>Watch as advanced algorithms transform your voice into structured, actionable insights.</p>
+            </div>
+            <div class="feature-card">
+                <i data-feather="check-circle" class="feature-icon"></i>
+                <h3>Instant Organization</h3>
+                <p>Get perfectly formatted outputs in seconds - exactly the way you need them.</p>
+            </div>
+        </div>
+
+        <div class="progress-steps">
+            <div class="step active">
+                <div class="step-number">1</div>
+                <span>Choose Format</span>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <span>Upload Audio</span>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <span>Get Results</span>
+            </div>
+        </div>
+
+        <div id="formatSelector" class="format-selector">
+            <h2 class="format-header">
+                <i data-feather="layout"></i>
+                Choose Your Output Format
+            </h2>
+            <div class="format-grid">
+                <div class="format-card active" data-format="tasks">
+                    <div class="format-preview">
+                        <img src="static/images/task-preview.svg" alt="Task List Preview">
+                        <div class="preview-overlay">
+                            <span>See Example</span>
+                        </div>
+                    </div>
+                    <div class="format-icon">
+                        <i data-feather="check-square"></i>
+                        <span class="format-badge free">Free</span>
+                    </div>
+                    <h3>Turn Messy Ideas Into Clear Action Plans</h3>
+                    <p>Instantly transform your voice notes into organized, prioritized task lists</p>
+                    <div class="format-best-for">
+                        <span class="best-for-label">Perfect for:</span>
+                        <ul class="use-cases">
+                            <li>Project Planning</li>
+                            <li>Daily To-Dos</li>
+                            <li>Team Assignments</li>
+                        </ul>
+                    </div>
+                    <ul class="format-features">
+                        <li><i data-feather="check"></i> Smart Priority Sorting</li>
+                        <li><i data-feather="check"></i> Dependency Mapping</li>
+                        <li><i data-feather="check"></i> Timeline Generation</li>
+                    </ul>
+                </div>
+                <div class="format-card pro" data-format="roadmap">
+                    <div class="format-preview">
+                        <img src="static/images/roadmap-preview.svg" alt="Strategic Roadmap Preview">
+                        <div class="preview-overlay">
+                            <span>See Example</span>
+                        </div>
+                    </div>
+                    <div class="format-icon">
+                        <i data-feather="git-branch"></i>
+                        <span class="format-badge pro">Pro</span>
+                    </div>
+                    <h3>Transform Vision Into Strategic Direction</h3>
+                    <p>Convert your strategic discussions into comprehensive roadmaps</p>
+                    <div class="format-best-for">
+                        <span class="best-for-label">Perfect for:</span>
+                        <ul class="use-cases">
+                            <li>Product Strategy</li>
+                            <li>Business Planning</li>
+                            <li>Growth Initiatives</li>
+                        </ul>
+                    </div>
+                    <ul class="format-features">
+                        <li><i data-feather="check"></i> Market Analysis</li>
+                        <li><i data-feather="check"></i> Resource Planning</li>
+                        <li><i data-feather="check"></i> Success Metrics</li>
+                    </ul>
+                </div>
+                <div class="format-card pro" data-format="process">
+                    <div class="format-preview">
+                        <img src="static/images/process-preview.svg" alt="Process Documentation Preview">
+                        <div class="preview-overlay">
+                            <span>See Example</span>
+                        </div>
+                    </div>
+                    <div class="format-icon">
+                        <i data-feather="file-text"></i>
+                        <span class="format-badge pro">Pro</span>
+                    </div>
+                    <h3>Capture Expert Knowledge, Instantly</h3>
+                    <p>Turn verbal explanations into crystal-clear process documentation</p>
+                    <div class="format-best-for">
+                        <span class="best-for-label">Perfect for:</span>
+                        <ul class="use-cases">
+                            <li>Standard Operating Procedures</li>
+                            <li>Training Materials</li>
+                            <li>Technical Guides</li>
+                        </ul>
+                    </div>
+                    <ul class="format-features">
+                        <li><i data-feather="check"></i> Step-by-Step Breakdown</li>
+                        <li><i data-feather="check"></i> Clear Prerequisites</li>
+                        <li><i data-feather="check"></i> Expected Outcomes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
         <div id="uploadArea" class="upload-area">
             <input type="file" id="fileInput" class="file-input" accept="audio/*">
@@ -41,45 +166,59 @@
             <!-- Audio files will be listed here -->
         </div>
 
-        <div class="features-grid">
-            <div class="feature-card">
-                <i data-feather="mic" class="feature-icon"></i>
-                <h3>Speak Naturally</h3>
-                <p>Record your thoughts on the go. Our AI understands context, tone, and priorities.</p>
-            </div>
-            <div class="feature-card">
-                <i data-feather="cpu" class="feature-icon"></i>
-                <h3>AI Magic</h3>
-                <p>Watch as advanced algorithms transform your voice into structured, actionable insights.</p>
-            </div>
-            <div class="feature-card">
-                <i data-feather="check-circle" class="feature-icon"></i>
-                <h3>Instant Organization</h3>
-                <p>Get prioritized tasks, timelines, and action items - all from your natural speech.</p>
-            </div>
-        </div>
-
-        <div class="benefits-section">
-            <div class="benefit-card">
-                <i data-feather="clock" class="benefit-icon"></i>
-                <h3>Save 10+ Hours Weekly</h3>
-                <p>Eliminate manual task creation and organization. Focus on execution, not administration.</p>
-            </div>
-            <div class="benefit-card">
-                <i data-feather="trending-up" class="benefit-icon"></i>
-                <h3>10x Your Productivity</h3>
-                <p>Turn every spoken word into actionable progress. No more lost ideas or forgotten details.</p>
-            </div>
-            <div class="benefit-card">
-                <i data-feather="zap" class="benefit-icon"></i>
-                <h3>Instant Results</h3>
-                <p>From voice to organized plan in seconds. Experience the future of project management.</p>
+        <div class="social-proof">
+            <h2 class="social-proof-header">Loved by Productive Teams</h2>
+            <p class="social-proof-subtext">Join thousands of professionals who've revolutionized their workflow</p>
+            
+            <div class="testimonials">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "Voxify has completely transformed how we document processes. What used to take hours now takes minutes."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="static/images/avatar1.svg" alt="Sarah Chen">
+                        </div>
+                        <div class="author-info">
+                            <div class="author-name">Sarah Chen</div>
+                            <div class="author-title">Technical Lead at Acme Inc</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "The process documentation feature is a game-changer. Our team's knowledge sharing has never been better."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="static/images/avatar2.svg" alt="Marcus Johnson">
+                        </div>
+                        <div class="author-info">
+                            <div class="author-name">Marcus Johnson</div>
+                            <div class="author-title">Engineering Manager</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "Finally, a tool that understands how real teams work. The AI is incredibly accurate at capturing our processes."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="static/images/avatar3.svg" alt="Emily Rodriguez">
+                        </div>
+                        <div class="author-info">
+                            <div class="author-name">Emily Rodriguez</div>
+                            <div class="author-title">Product Manager</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="cta-section">
-            <h2>Ready to Revolutionize Your Workflow?</h2>
-            <p>Join thousands of professionals who've transformed their project management with Voxify.</p>
+            <h2>Ready to Transform Your Voice into Action?</h2>
+            <p>Join innovative professionals who've revolutionized their workflow with Voxify.</p>
             <button class="cta-button">
                 <i data-feather="arrow-right"></i>
                 Start Free Trial
@@ -96,7 +235,149 @@
     </script>
 
     <style>
-        /* Additional styles for new marketing sections */
+        /* Format Selector Styles */
+        .format-selector {
+            margin: 3rem 0;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .format-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.75rem;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+        }
+
+        .format-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .format-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .format-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(109, 90, 255, 0.1), rgba(167, 139, 250, 0.1));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .format-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-lg), var(--glow);
+        }
+
+        .format-card:hover::before {
+            opacity: 1;
+        }
+
+        .format-card.active {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-lg), var(--glow);
+        }
+
+        .format-card.pro {
+            border-color: #a78bfa;
+        }
+
+        .format-card.coming-soon {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .format-icon {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .format-icon i {
+            width: 32px;
+            height: 32px;
+            color: var(--primary-color);
+        }
+
+        .format-badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .format-badge.free {
+            background: rgba(0, 204, 136, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(0, 204, 136, 0.2);
+        }
+
+        .format-badge.pro {
+            background: rgba(167, 139, 250, 0.1);
+            color: #a78bfa;
+            border: 1px solid rgba(167, 139, 250, 0.2);
+        }
+
+        .format-badge.soon {
+            background: rgba(255, 179, 71, 0.1);
+            color: var(--warning-color);
+            border: 1px solid rgba(255, 179, 71, 0.2);
+        }
+
+        .format-card h3 {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .format-card p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .format-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .format-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .format-features li i {
+            width: 16px;
+            height: 16px;
+            color: var(--success-color);
+        }
+
+        /* Existing marketing section styles */
         .benefits-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -191,6 +472,11 @@
         }
 
         @media (max-width: 768px) {
+            .format-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
             .benefits-section {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;

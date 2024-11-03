@@ -59,6 +59,63 @@ def test_process_audio_success():
         assert "priority" in task
         assert task["priority"] in ["High", "Medium", "Low"]
 
+def test_process_audio_roadmap_invalid_file():
+    # Test with non-audio file
+    files = {"file": ("test.txt", b"test content", "text/plain")}
+    response = client.post("/process-audio/roadmap/", files=files)
+    assert response.status_code == 400
+    assert "File must be an audio file" in response.json()["detail"]
+
+def test_process_audio_roadmap_missing_file():
+    response = client.post("/process-audio/roadmap/")
+    assert response.status_code == 422  # FastAPI validation error
+
+@pytest.mark.skip(reason="Requires valid API keys and audio file")
+def test_process_audio_roadmap_success():
+    # This test requires:
+    # 1. Valid API keys in environment
+    # 2. A test audio file
+    # Enable and modify this test in your development environment
+    
+    test_audio = "test_audio.mp3"
+    if not os.path.exists(test_audio):
+        pytest.skip(f"Test audio file {test_audio} not found")
+    
+    with open(test_audio, "rb") as f:
+        files = {"file": (test_audio, f, "audio/mpeg")}
+        response = client.post("/process-audio/roadmap/", files=files)
+    
+    assert response.status_code == 200
+    data = response.json()
+    
+    # Verify roadmap response structure
+    assert "market_analysis" in data
+    assert "resource_requirements" in data
+    assert "dependencies" in data
+    assert "milestones" in data
+    assert "success_metrics" in data
+    assert "summary" in data
+    
+    # Verify section structure
+    sections = [
+        data["market_analysis"],
+        data["resource_requirements"],
+        data["dependencies"],
+        data["milestones"],
+        data["success_metrics"]
+    ]
+    
+    for section in sections:
+        assert len(section) > 0
+        for item in section:
+            assert "title" in item
+            assert "priority" in item
+            assert "timeline" in item
+            assert "content" in item
+            assert item["priority"] in ["High", "Medium", "Low"]
+            assert isinstance(item["content"], list)
+            assert len(item["content"]) > 0
+
 def test_cors_headers():
     response = client.options("/health", headers={
         "origin": "http://localhost:8080",
