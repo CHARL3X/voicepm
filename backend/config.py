@@ -15,6 +15,8 @@ where appropriate. Settings are loaded from environment variables or .env file.
 """
 
 import os
+import json
+from typing import List
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
@@ -25,8 +27,8 @@ class Settings(BaseSettings):
     ANTHROPIC_API_KEY: str = os.getenv("ANTHROPIC_API_KEY", "")
     OPENROUTER_API_KEY: str = os.getenv("OPENROUTER_API_KEY", "")
     
-    # CORS Settings
-    CORS_ORIGINS: list = ["*"]  # Allow all origins for testing
+    # CORS Settings - Parse from environment or use default
+    CORS_ORIGINS: List[str] = json.loads(os.getenv("CORS_ORIGINS", '["*"]'))
     
     class Config:
         """Pydantic config for settings."""
