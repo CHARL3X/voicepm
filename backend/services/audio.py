@@ -17,6 +17,11 @@ def create_openrouter_client(api_key: str) -> OpenAI:
 async def process_transcript_to_tasks(transcript: str, openrouter_client: OpenAI) -> dict:
     """Process the transcript into tasks using Claude 3.5 Sonnet."""
     try:
+        if not openrouter_client or not hasattr(openrouter_client, 'chat'):
+            print("OpenRouter client not properly initialized")
+            raise ValueError("API client not properly initialized")
+
+        print("Starting task processing with OpenRouter...")
         response = openrouter_client.chat.completions.create(
             model="anthropic/claude-3.5-sonnet",
             messages=[
@@ -58,16 +63,30 @@ async def process_transcript_to_tasks(transcript: str, openrouter_client: OpenAI
             
     except Exception as e:
         print(f"Error in process_transcript_to_tasks: {str(e)}")
-        raise HTTPException(
-            status_code=500,
-            detail=f"Error processing transcript: {str(e)}"
-        )
+        if "api_key" in str(e).lower():
+            raise HTTPException(
+                status_code=500,
+                detail="API key configuration error. Please check your environment variables."
+            )
+        elif "connection" in str(e).lower():
+            raise HTTPException(
+                status_code=500,
+                detail="Unable to connect to AI service. Please try again later."
+            )
+        else:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Error processing transcript: {str(e)}"
+            )
 
 async def process_transcript_to_roadmap(transcript: str, openrouter_client: OpenAI) -> dict:
     """Process the transcript into a strategic roadmap using Claude 3.5 Sonnet."""
     try:
-        print("Starting roadmap processing...")  # Debug log
-        
+        if not openrouter_client or not hasattr(openrouter_client, 'chat'):
+            print("OpenRouter client not properly initialized")
+            raise ValueError("API client not properly initialized")
+
+        print("Starting roadmap processing with OpenRouter...")
         response = openrouter_client.chat.completions.create(
             model="anthropic/claude-3.5-sonnet",
             messages=[
@@ -112,14 +131,30 @@ async def process_transcript_to_roadmap(transcript: str, openrouter_client: Open
             
     except Exception as e:
         print(f"Error in process_transcript_to_roadmap: {str(e)}")
-        raise HTTPException(
-            status_code=500,
-            detail=f"Error processing transcript: {str(e)}"
-        )
+        if "api_key" in str(e).lower():
+            raise HTTPException(
+                status_code=500,
+                detail="API key configuration error. Please check your environment variables."
+            )
+        elif "connection" in str(e).lower():
+            raise HTTPException(
+                status_code=500,
+                detail="Unable to connect to AI service. Please try again later."
+            )
+        else:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Error processing transcript: {str(e)}"
+            )
 
 async def process_transcript_to_process_doc(transcript: str, openrouter_client: OpenAI) -> dict:
     """Process the transcript into a process document using Claude 3.5 Sonnet."""
     try:
+        if not openrouter_client or not hasattr(openrouter_client, 'chat'):
+            print("OpenRouter client not properly initialized")
+            raise ValueError("API client not properly initialized")
+
+        print("Starting process doc processing with OpenRouter...")
         response = openrouter_client.chat.completions.create(
             model="anthropic/claude-3.5-sonnet",
             messages=[
@@ -161,7 +196,18 @@ async def process_transcript_to_process_doc(transcript: str, openrouter_client: 
             
     except Exception as e:
         print(f"Error in process_transcript_to_process_doc: {str(e)}")
-        raise HTTPException(
-            status_code=500,
-            detail=f"Error processing transcript: {str(e)}"
-        )
+        if "api_key" in str(e).lower():
+            raise HTTPException(
+                status_code=500,
+                detail="API key configuration error. Please check your environment variables."
+            )
+        elif "connection" in str(e).lower():
+            raise HTTPException(
+                status_code=500,
+                detail="Unable to connect to AI service. Please try again later."
+            )
+        else:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Error processing transcript: {str(e)}"
+            )
