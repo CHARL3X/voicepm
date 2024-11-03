@@ -2,7 +2,7 @@ class VoicePM {
     constructor() {
         this.API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
             ? 'http://localhost:8000'
-            : 'https://api.voxify.app';
+            : 'https://voicepm-backend.onrender.com';
         this.isBackendAvailable = false;
         this.isDemoMode = false;
         this.selectedFormat = 'tasks'; // Default format
