@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voxify - AI-Powered Voice-to-Task Revolution</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <!-- Add Feather Icons for premium look -->
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1 class="app-title">
+                Voxify
+                <span id="modeBadge" class="mode-badge demo">
+                    <i data-feather="radio"></i>
+                    <span>Demo Mode</span>
+                </span>
+            </h1>
+            <p class="app-description">
+                Transform Your Voice into Action. Harness AI-powered intelligence to convert voice memos into 
+                beautifully organized project plans in seconds. Say goodbye to manual task management.
+            </p>
+        </header>
+
+        <div id="uploadArea" class="upload-area">
+            <input type="file" id="fileInput" class="file-input" accept="audio/*">
+            <i data-feather="upload-cloud" class="upload-icon"></i>
+            <p class="upload-text">Start Your Productivity Revolution</p>
+            <p class="upload-subtext">Drop your voice memo or click to upload (MP3, M4A, WAV supported)</p>
+        </div>
+        
+        <div id="status" class="status"></div>
+        
+        <div id="audioList" class="audio-list">
+            <h2 class="audio-list-header">
+                <i data-feather="headphones"></i>
+                Your Voice Insights
+            </h2>
+            <!-- Audio files will be listed here -->
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <i data-feather="mic" class="feature-icon"></i>
+                <h3>Speak Naturally</h3>
+                <p>Record your thoughts on the go. Our AI understands context, tone, and priorities.</p>
+            </div>
+            <div class="feature-card">
+                <i data-feather="cpu" class="feature-icon"></i>
+                <h3>AI Magic</h3>
+                <p>Watch as advanced algorithms transform your voice into structured, actionable insights.</p>
+            </div>
+            <div class="feature-card">
+                <i data-feather="check-circle" class="feature-icon"></i>
+                <h3>Instant Organization</h3>
+                <p>Get prioritized tasks, timelines, and action items - all from your natural speech.</p>
+            </div>
+        </div>
+
+        <div class="benefits-section">
+            <div class="benefit-card">
+                <i data-feather="clock" class="benefit-icon"></i>
+                <h3>Save 10+ Hours Weekly</h3>
+                <p>Eliminate manual task creation and organization. Focus on execution, not administration.</p>
+            </div>
+            <div class="benefit-card">
+                <i data-feather="trending-up" class="benefit-icon"></i>
+                <h3>10x Your Productivity</h3>
+                <p>Turn every spoken word into actionable progress. No more lost ideas or forgotten details.</p>
+            </div>
+            <div class="benefit-card">
+                <i data-feather="zap" class="benefit-icon"></i>
+                <h3>Instant Results</h3>
+                <p>From voice to organized plan in seconds. Experience the future of project management.</p>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>Ready to Revolutionize Your Workflow?</h2>
+            <p>Join thousands of professionals who've transformed their project management with Voxify.</p>
+            <button class="cta-button">
+                <i data-feather="arrow-right"></i>
+                Start Free Trial
+            </button>
+        </div>
+    </div>
+
+    <script src="static/js/app.js"></script>
+    <script>
+        // Initialize Feather icons
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+        });
+    </script>
+
+    <style>
+        /* Additional styles for new marketing sections */
+        .benefits-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+            padding: 2rem 0;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .benefit-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg), var(--glow);
+            border-color: var(--primary-color);
+        }
+
+        .benefit-icon {
+            width: 48px;
+            height: 48px;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .benefit-card h3 {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .benefit-card p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        .cta-section {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(109, 90, 255, 0.1), rgba(167, 139, 250, 0.1));
+            border-radius: var(--radius-lg);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .cta-section h2 {
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .cta-section p {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary-color), #a78bfa);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            font-size: 1.125rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: var(--shadow);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg), var(--glow);
+        }
+
+        @media (max-width: 768px) {
+            .benefits-section {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .cta-section {
+                padding: 3rem 1.5rem;
+            }
+
+            .cta-section h2 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</body>
+</html>
