@@ -9,8 +9,8 @@ def create_openrouter_client(api_key: str) -> OpenAI:
         base_url="https://openrouter.ai/api/v1",
         api_key=api_key,
         default_headers={
-            "HTTP-Referer": "https://voxify.app",
-            "X-Title": "Voxify"
+            "HTTP-Referer": "https://www.charlestobin.com",  # Updated to match CORS origin
+            "X-Title": "VoicePM"  # Updated to match project name
         }
     )
 
