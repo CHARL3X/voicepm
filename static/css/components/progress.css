@@ -1,0 +1,172 @@
+/* Progress Bar Container */
+.progress-container {
+    width: 100%;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.progress-container:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-lg), var(--glow);
+}
+
+/* Progress Header */
+.progress-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.progress-stage {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.progress-stage i {
+    color: var(--primary-color);
+}
+
+.progress-time {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+/* Progress Bar */
+.progress-bar-wrapper {
+    background: var(--bg-accent);
+    border-radius: var(--radius);
+    height: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-color), #a78bfa);
+    border-radius: var(--radius);
+    transition: width 0.3s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    animation: shimmer 1.5s infinite;
+}
+
+/* Progress Message */
+.progress-message {
+    margin-top: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    min-height: 1.25rem;
+    transition: var(--transition);
+}
+
+/* Stage Icons */
+.progress-stages {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding: 0 0.5rem;
+}
+
+.stage-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--bg-accent);
+    border: 2px solid var(--border-color);
+    position: relative;
+    transition: var(--transition);
+}
+
+.stage-icon.completed {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.stage-icon.active {
+    border-color: var(--primary-color);
+    box-shadow: var(--glow);
+}
+
+.stage-icon:hover::after {
+    content: attr(data-stage);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.25rem 0.5rem;
+    background: var(--bg-accent);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    margin-bottom: 0.5rem;
+}
+
+/* Animation */
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Format Indicator */
+.format-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    background: rgba(109, 90, 255, 0.1);
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    color: var(--primary-color);
+}
+
+.format-indicator i {
+    width: 16px;
+    height: 16px;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .progress-container {
+        padding: 1rem;
+    }
+    
+    .progress-stages {
+        display: none;
+    }
+    
+    .progress-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}

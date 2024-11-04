@@ -47,3 +47,4 @@ temp_*
 # Logs
 *.log
 logs/
+public/custom-elements

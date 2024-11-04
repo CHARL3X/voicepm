@@ -1,0 +1,89 @@
+/* Mode Badges */
+.mode-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-lg);
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-left: 0.75rem;
+    transition: var(--transition);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.mode-badge.demo {
+    background: rgba(255, 179, 71, 0.1);
+    color: var(--warning-color);
+    border: 1px solid rgba(255, 179, 71, 0.2);
+}
+
+.mode-badge.production {
+    background: rgba(0, 204, 136, 0.1);
+    color: var(--success-color);
+    border: 1px solid rgba(0, 204, 136, 0.2);
+}
+
+.mode-badge.offline {
+    background: rgba(255, 77, 77, 0.1);
+    color: var(--error-color);
+    border: 1px solid rgba(255, 77, 77, 0.2);
+}
+
+/* Format Badges */
+.format-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.format-badge.free {
+    background: rgba(0, 204, 136, 0.1);
+    color: var(--success-color);
+    border: 1px solid rgba(0, 204, 136, 0.2);
+}
+
+.format-badge.pro {
+    background: rgba(167, 139, 250, 0.1);
+    color: #a78bfa;
+    border: 1px solid rgba(167, 139, 250, 0.2);
+}
+
+.format-badge.soon {
+    background: rgba(255, 179, 71, 0.1);
+    color: var(--warning-color);
+    border: 1px solid rgba(255, 179, 71, 0.2);
+}
+
+/* Priority Badges */
+.priority-badge {
+    padding: 0.375rem 1rem;
+    border-radius: var(--radius-lg);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.priority-high {
+    background: rgba(255, 77, 77, 0.1);
+    color: var(--error-color);
+    border: 1px solid rgba(255, 77, 77, 0.2);
+}
+
+.priority-medium {
+    background: rgba(255, 179, 71, 0.1);
+    color: var(--warning-color);
+    border: 1px solid rgba(255, 179, 71, 0.2);
+}
+
+.priority-low {
+    background: rgba(0, 204, 136, 0.1);
+    color: var(--success-color);
+    border: 1px solid rgba(0, 204, 136, 0.2);
+}
