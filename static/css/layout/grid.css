@@ -1,32 +1,32 @@
 /* Main Layout */
 .container {
     max-width: 1024px;
-    margin: 2rem auto;
-    padding: 0 1.5rem;
+    margin: var(--space-8) auto;
+    padding: 0 var(--space-6);
 }
 
 /* Features Grid */
 .features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 4rem;
-    padding: 2rem 0;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+    padding: var(--space-4) 0;
     animation: fadeInUp 0.8s ease-out;
 }
 
 /* Format Grid */
 .format-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
 }
 
 /* Testimonials Grid */
 .testimonials {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
 }
 
 /* Process Steps Grid */
@@ -35,7 +35,7 @@
     padding: 0;
     margin: 0;
     display: grid;
-    gap: 1.5rem;
+    gap: var(--space-4);
 }
 
 /* Task List Grid */
@@ -44,7 +44,7 @@
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 1rem;
+    gap: var(--space-3);
 }
 
 /* Roadmap List Grid */
@@ -53,28 +53,35 @@
     padding: 0;
     margin: 0;
     display: grid;
-    gap: 1.5rem;
+    gap: var(--space-4);
 }
 
 /* Best For Grid */
 .format-best-for {
     background: var(--bg-accent);
-    padding: 1rem;
+    padding: var(--space-4);
     border-radius: var(--radius);
-    margin-top: 1rem;
+    margin-top: var(--space-4);
 }
 
 /* Responsive Adjustments */
+@media (max-width: 1200px) {
+    .format-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
     .container {
-        padding: 0 1rem;
+        padding: 0 var(--space-4);
+        margin: var(--space-4) auto;
     }
 
     .features-grid,
     .format-grid,
     .testimonials {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: var(--space-4);
     }
 }
 
@@ -96,19 +103,19 @@
 }
 
 .gap-2 {
-    gap: 0.5rem;
+    gap: var(--space-2);
 }
 
 .gap-4 {
-    gap: 1rem;
+    gap: var(--space-4);
 }
 
 .gap-6 {
-    gap: 1.5rem;
+    gap: var(--space-6);
 }
 
 .gap-8 {
-    gap: 2rem;
+    gap: var(--space-8);
 }
 
 /* Flex Utility Classes */
@@ -133,13 +140,13 @@
 }
 
 .gap-2 {
-    gap: 0.5rem;
+    gap: var(--space-2);
 }
 
 .gap-4 {
-    gap: 1rem;
+    gap: var(--space-4);
 }
 
 .gap-6 {
-    gap: 1.5rem;
+    gap: var(--space-6);
 }

@@ -2,6 +2,7 @@
 .mode-badge {
     display: inline-flex;
     align-items: center;
+    gap: 0.5rem;
     padding: 0.5rem 1rem;
     border-radius: var(--radius-lg);
     font-size: 0.875rem;
@@ -10,6 +11,24 @@
     transition: var(--transition);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    position: relative;
+    overflow: hidden;
+}
+
+.mode-badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-hover);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.mode-badge:hover::before {
+    opacity: 0.2;
 }
 
 .mode-badge.demo {
@@ -19,15 +38,25 @@
 }
 
 .mode-badge.production {
-    background: rgba(0, 204, 136, 0.1);
+    background: rgba(0, 229, 184, 0.1);
     color: var(--success-color);
-    border: 1px solid rgba(0, 204, 136, 0.2);
+    border: 1px solid rgba(0, 229, 184, 0.2);
 }
 
 .mode-badge.offline {
-    background: rgba(255, 77, 77, 0.1);
+    background: rgba(255, 51, 102, 0.1);
     color: var(--error-color);
-    border: 1px solid rgba(255, 77, 77, 0.2);
+    border: 1px solid rgba(255, 51, 102, 0.2);
+}
+
+.mode-badge i {
+    width: 16px;
+    height: 16px;
+    transition: var(--transition);
+}
+
+.mode-badge:hover i {
+    transform: scale(1.1);
 }
 
 /* Format Badges */
@@ -38,18 +67,39 @@
     border-radius: var(--radius);
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.format-badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-hover);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.format-badge:hover::before {
+    opacity: 0.2;
 }
 
 .format-badge.free {
-    background: rgba(0, 204, 136, 0.1);
+    background: rgba(0, 229, 184, 0.1);
     color: var(--success-color);
-    border: 1px solid rgba(0, 204, 136, 0.2);
+    border: 1px solid rgba(0, 229, 184, 0.2);
 }
 
 .format-badge.pro {
-    background: rgba(167, 139, 250, 0.1);
-    color: #a78bfa;
-    border: 1px solid rgba(167, 139, 250, 0.2);
+    background: rgba(0, 209, 255, 0.1);
+    color: var(--primary-color);
+    border: 1px solid rgba(0, 209, 255, 0.2);
+    animation: smoothGradient 3s ease infinite;
+    background-size: 200% 200%;
 }
 
 .format-badge.soon {
@@ -68,12 +118,37 @@
     letter-spacing: 0.05em;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.priority-badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.priority-badge:hover::before {
+    opacity: 0.2;
 }
 
 .priority-high {
-    background: rgba(255, 77, 77, 0.1);
-    color: var(--error-color);
-    border: 1px solid rgba(255, 77, 77, 0.2);
+    background: rgba(255, 51, 102, 0.1);
+    color: var(--accent-color);
+    border: 1px solid rgba(255, 51, 102, 0.2);
+}
+
+.priority-high::before {
+    background: linear-gradient(135deg, 
+        rgba(255, 51, 102, 0.1),
+        rgba(255, 139, 61, 0.1)
+    );
 }
 
 .priority-medium {
@@ -82,8 +157,40 @@
     border: 1px solid rgba(255, 179, 71, 0.2);
 }
 
+.priority-medium::before {
+    background: linear-gradient(135deg,
+        rgba(255, 179, 71, 0.1),
+        rgba(255, 139, 61, 0.1)
+    );
+}
+
 .priority-low {
-    background: rgba(0, 204, 136, 0.1);
+    background: rgba(0, 229, 184, 0.1);
     color: var(--success-color);
-    border: 1px solid rgba(0, 204, 136, 0.2);
+    border: 1px solid rgba(0, 229, 184, 0.2);
+}
+
+.priority-low::before {
+    background: linear-gradient(135deg,
+        rgba(0, 229, 184, 0.1),
+        rgba(0, 209, 255, 0.1)
+    );
+}
+
+/* Hover Effects */
+.mode-badge:hover,
+.format-badge:hover,
+.priority-badge:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Animation Classes */
+.badge-pulse {
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+.badge-gradient {
+    animation: smoothGradient 3s ease infinite;
+    background-size: 200% 200%;
 }

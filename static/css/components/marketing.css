@@ -1,110 +1,328 @@
 /* Benefits Section */
 .benefits-section {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 4rem;
-    padding: 2rem 0;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-6);
+    margin-top: var(--space-12);
+    padding: var(--space-6) 0;
     animation: fadeInUp 0.8s ease-out;
 }
 
 .benefit-card {
-    background: var(--bg-primary);
+    background: var(--bg-secondary);
     border-radius: var(--radius-lg);
-    padding: 2rem;
+    padding: var(--space-6);
     text-align: center;
     transition: var(--transition);
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.benefit-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gradient-scatter);
+    opacity: 0;
+    transition: var(--transition);
 }
 
 .benefit-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-lg), var(--glow);
+    box-shadow: var(--shadow-lg);
     border-color: var(--primary-color);
+}
+
+.benefit-card:hover::before {
+    opacity: 1;
 }
 
 .benefit-icon {
     width: 48px;
     height: 48px;
     color: var(--primary-color);
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-4);
+    transition: var(--transition);
+}
+
+.benefit-card:hover .benefit-icon {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 4px var(--primary-color));
 }
 
 .benefit-card h3 {
     color: var(--text-primary);
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
+    font-size: 1.125rem;
+    margin-bottom: var(--space-3);
+    transition: var(--transition);
 }
 
-.benefit-card p {
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    line-height: 1.6;
-}
-
-/* CTA Section */
-.cta-section {
-    text-align: center;
-    margin-top: 4rem;
-    padding: 4rem 2rem;
-    background: linear-gradient(135deg, rgba(109, 90, 255, 0.1), rgba(167, 139, 250, 0.1));
-    border-radius: var(--radius-lg);
-    animation: fadeInUp 0.8s ease-out;
-}
-
-.cta-section h2 {
-    font-size: 2rem;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
-    background: linear-gradient(135deg, var(--primary-color), #a78bfa);
+.benefit-card:hover h3 {
+    background: var(--gradient-organize);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
 }
 
+.benefit-card p {
+    color: var(--text-light);
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+/* Audio List Section */
+.audio-list {
+    margin: var(--space-12) 0;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.audio-list-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+}
+
+.audio-list-header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100px;
+    height: 2px;
+    background: var(--gradient-organize);
+}
+
+.audio-list-header i {
+    color: var(--primary-color);
+}
+
+.format-indicator {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    padding: var(--space-2) var(--space-4);
+    background: rgba(0, 209, 255, 0.1);
+    border-radius: var(--radius);
+    border: 1px solid rgba(0, 209, 255, 0.2);
+}
+
+.format-indicator i {
+    width: 16px;
+    height: 16px;
+}
+
+/* Refined CTA Section */
+.cta-section {
+    text-align: center;
+    margin: var(--space-12) auto;
+    padding: var(--space-8) var(--space-6);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    animation: fadeInUp 0.8s ease-out;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    width: 100%;
+}
+
+.cta-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        circle at center,
+        rgba(0, 209, 255, 0.1),
+        rgba(0, 229, 184, 0.05) 50%,
+        transparent 100%
+    );
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.cta-section:hover::before {
+    opacity: 1;
+    animation: smoothGradient 3s ease infinite;
+    background-size: 200% 200%;
+}
+
+.cta-section h2 {
+    font-size: 1.75rem;
+    line-height: 1.2;
+    margin-bottom: var(--space-4);
+    background: var(--gradient-organize);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    position: relative;
+    font-weight: 600;
+}
+
 .cta-section p {
     color: var(--text-secondary);
-    font-size: 1.125rem;
-    margin-bottom: 2rem;
-    max-width: 600px;
+    font-size: 1rem;
+    margin-bottom: var(--space-6);
+    max-width: 500px;
     margin-left: auto;
     margin-right: auto;
+    line-height: 1.5;
+    position: relative;
 }
 
 .cta-button {
-    background: linear-gradient(135deg, var(--primary-color), #a78bfa);
-    color: white;
+    background: var(--gradient-organize);
+    background-size: 200% 200%;
+    color: var(--text-primary);
     border: none;
-    padding: 1rem 2.5rem;
+    padding: var(--space-3) var(--space-6);
     border-radius: var(--radius);
     font-weight: 500;
-    font-size: 1.125rem;
+    font-size: 0.875rem;
     cursor: pointer;
     transition: var(--transition);
     display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: var(--space-2);
     box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cta-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transform: translateX(-100%);
+    transition: transform 0.75s ease;
 }
 
 .cta-button:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg), var(--glow);
+    animation: smoothGradient 3s ease infinite;
+}
+
+.cta-button:hover::before {
+    transform: translateX(100%);
+}
+
+.cta-button i {
+    transition: var(--transition);
+    font-size: 1rem;
+}
+
+.cta-button:hover i {
+    transform: translateX(4px) scale(1.1);
+}
+
+/* Features Grid */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-8) 0;
+}
+
+.feature-card {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    text-align: center;
+    transition: var(--transition);
+    border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gradient-scatter);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-lg);
+}
+
+.feature-card:hover::before {
+    opacity: 1;
+}
+
+.feature-icon {
+    width: 40px;
+    height: 40px;
+    color: var(--primary-color);
+    margin-bottom: var(--space-3);
+    transition: var(--transition);
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 4px var(--primary-color));
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .benefits-section {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: var(--space-4);
     }
 
     .cta-section {
-        padding: 3rem 1.5rem;
+        padding: var(--space-6) var(--space-4);
+        margin-top: var(--space-8);
     }
 
     .cta-section h2 {
-        font-size: 1.75rem;
+        font-size: 1.5rem;
+    }
+
+    .cta-section p {
+        font-size: 0.875rem;
+        margin-bottom: var(--space-4);
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+    }
+
+    .audio-list-header {
+        font-size: 1.25rem;
     }
 }

@@ -47,6 +47,83 @@
     to { transform: rotate(360deg); }
 }
 
+/* Gradient Flow */
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Scatter to Order */
+@keyframes scatterToOrder {
+    0% {
+        letter-spacing: 0.5em;
+        opacity: 0;
+        filter: blur(4px);
+    }
+    50% {
+        letter-spacing: 0.2em;
+        opacity: 0.5;
+        filter: blur(2px);
+    }
+    100% {
+        letter-spacing: normal;
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
+/* Smooth Gradient Transition */
+@keyframes smoothGradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Glow Pulse */
+@keyframes glowPulse {
+    0% {
+        box-shadow: 0 0 5px rgba(0, 209, 255, 0.1),
+                    0 0 10px rgba(0, 209, 255, 0.1);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(0, 209, 255, 0.2),
+                    0 0 30px rgba(0, 209, 255, 0.2);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(0, 209, 255, 0.1),
+                    0 0 10px rgba(0, 209, 255, 0.1);
+    }
+}
+
+/* Gradient Border Flow */
+@keyframes gradientBorderFlow {
+    0% {
+        border-image-source: var(--gradient-scatter);
+        border-image-slice: 1;
+    }
+    50% {
+        border-image-source: var(--gradient-organize);
+        border-image-slice: 1;
+    }
+    100% {
+        border-image-source: var(--gradient-scatter);
+        border-image-slice: 1;
+    }
+}
+
 /* Animation Classes */
 .loading {
     display: inline-block;
@@ -73,4 +150,49 @@
 
 .animate-shake {
     animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+.animate-scatterToOrder {
+    animation: scatterToOrder 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-smoothGradient {
+    background-size: 200% 200%;
+    animation: smoothGradient 3s ease infinite;
+}
+
+.animate-glowPulse {
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+.animate-gradientBorderFlow {
+    animation: gradientBorderFlow 3s ease infinite;
+}
+
+/* Hover Effects */
+.hover-glow:hover {
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+.hover-gradient:hover {
+    animation: smoothGradient 3s ease infinite;
+}
+
+/* Transition Utilities */
+.transition-all {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-transform {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-opacity {
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-colors {
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
