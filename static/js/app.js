@@ -531,16 +531,17 @@ class VoicePM {
         
         feather.replace();
     }
-    
+
     renderTasks(tasks) {
         return `
             <ul class="task-list">
                 ${tasks.map((task, index) => `
                     <li class="task-item" style="animation: slideIn 0.3s ease-out ${index * 0.1}s both;">
-                        <span class="priority-badge priority-${task.priority.toLowerCase()}">${task.priority}</span>
+                        <div class="task-checkbox" onclick="this.classList.toggle('checked')"></div>
                         <div class="task-content">
                             <div class="task-title">${task.title}</div>
                             ${task.description ? `<div class="task-description">${task.description}</div>` : ''}
+                            <span class="priority-badge priority-${task.priority.toLowerCase()}">${task.priority}</span>
                         </div>
                     </li>
                 `).join('')}
@@ -550,47 +551,59 @@ class VoicePM {
     
     renderRoadmapSections(sections) {
         return `
-            <ul class="roadmap-list">
+            <div class="roadmap-list">
                 ${sections.map((section, index) => `
-                    <li class="roadmap-item" style="animation: slideIn 0.3s ease-out ${index * 0.1}s both;">
+                    <div class="roadmap-section" style="animation: slideIn 0.3s ease-out ${index * 0.1}s both;">
                         <div class="roadmap-header">
-                            <h4>${section.title}</h4>
+                            <h4 class="roadmap-title">${section.title}</h4>
                             <span class="priority-badge priority-${section.priority.toLowerCase()}">${section.priority}</span>
                         </div>
-                        <div class="roadmap-timeline">${section.timeline}</div>
-                        <ul class="roadmap-content">
-                            ${section.content.map(item => `<li>${item}</li>`).join('')}
-                        </ul>
-                    </li>
+                        <div class="roadmap-timeline">
+                            <i data-feather="clock"></i>
+                            ${section.timeline}
+                        </div>
+                        <div class="roadmap-content">
+                            ${section.content.map(item => `
+                                <div class="roadmap-item">
+                                    <i data-feather="arrow-right"></i>
+                                    ${item}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
                 `).join('')}
-            </ul>
+            </div>
         `;
     }
     
     renderProcessSteps(steps) {
         return `
-            <ul class="process-steps">
+            <div class="process-steps">
                 ${steps.map((step, index) => `
-                    <li class="process-step" style="animation: slideIn 0.3s ease-out ${index * 0.1}s both;">
+                    <div class="process-step" style="animation: slideIn 0.3s ease-out ${index * 0.1}s both;">
                         <div class="step-number">${step.number}</div>
                         <div class="step-content">
                             <div class="step-action">${step.action}</div>
                             <div class="step-details">${step.details}</div>
-                            <div class="step-outcome">Expected: ${step.outcome}</div>
+                            <div class="step-outcome">
+                                <i data-feather="check-circle"></i>
+                                ${step.outcome}
+                            </div>
                         </div>
-                    </li>
+                    </div>
                 `).join('')}
-            </ul>
+            </div>
         `;
     }
     
     renderList(items) {
         return `
-            <ul>
+            <ul class="roadmap-content">
                 ${items.map((item, index) => `
-                    <li class="list-item" style="animation: slideIn 0.3s ease-out ${index * 0.1}s both;">
+                    <div class="roadmap-item" style="animation: slideIn 0.3s ease-out ${index * 0.1}s both;">
+                        <i data-feather="arrow-right"></i>
                         ${item}
-                    </li>
+                    </div>
                 `).join('')}
             </ul>
         `;
