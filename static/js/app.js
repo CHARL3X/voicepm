@@ -174,9 +174,6 @@ class VoicePM {
 
     showProFeaturePrompt() {
         this.showStatus('This is a Pro feature. Upgrade to access.', 'warning');
-        
-        // TODO: Show upgrade modal
-        console.log('Show upgrade modal');
     }
     
     initializeAnimations() {
@@ -533,43 +530,68 @@ class VoicePM {
     }
 
     renderTasks(tasks) {
+        // First, organize tasks by priority
+        const tasksByPriority = {
+            High: [],
+            Medium: [],
+            Low: []
+        };
+        
+        tasks.forEach(task => {
+            if (tasksByPriority[task.priority]) {
+                tasksByPriority[task.priority].push(task);
+            }
+        });
+
         return `
-            <ul class="task-list">
-                ${tasks.map((task, index) => `
-                    <li class="task-item" style="animation: slideIn 0.3s ease-out ${index * 0.1}s both;">
-                        <div class="task-checkbox" onclick="this.classList.toggle('checked')"></div>
-                        <div class="task-content">
-                            <div class="task-title">${task.title}</div>
-                            ${task.description ? `<div class="task-description">${task.description}</div>` : ''}
-                            <span class="priority-badge priority-${task.priority.toLowerCase()}">${task.priority}</span>
+            <div class="task-board">
+                ${Object.entries(tasksByPriority).map(([priority, priorityTasks]) => `
+                    <div class="task-column" data-priority="${priority.toLowerCase()}">
+                        <div class="column-header">
+                            <i data-feather="${priority === 'High' ? 'alert-circle' : priority === 'Medium' ? 'clock' : 'check-circle'}"></i>
+                            <h4>${priority} Priority</h4>
+                            <span class="task-count">${priorityTasks.length}</span>
                         </div>
-                    </li>
+                        ${priorityTasks.map((task, index) => `
+                            <div class="task-item" draggable="true" style="animation: fadeScale 0.3s ease-out ${index * 0.1}s both;">
+                                <div class="task-header">
+                                    <div class="task-checkbox" onclick="this.classList.toggle('checked')"></div>
+                                    <div class="task-content">
+                                        <div class="task-title">${task.title}</div>
+                                        ${task.description ? `<div class="task-description">${task.description}</div>` : ''}
+                                    </div>
+                                </div>
+                                <div class="task-meta">
+                                    <span class="priority-badge priority-${task.priority.toLowerCase()}">${task.priority}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
                 `).join('')}
-            </ul>
+            </div>
         `;
     }
     
     renderRoadmapSections(sections) {
         return `
-            <div class="roadmap-list">
+            <div class="roadmap-timeline">
+                <div class="timeline-track"></div>
                 ${sections.map((section, index) => `
-                    <div class="roadmap-section" style="animation: slideIn 0.3s ease-out ${index * 0.1}s both;">
-                        <div class="roadmap-header">
-                            <h4 class="roadmap-title">${section.title}</h4>
-                            <span class="priority-badge priority-${section.priority.toLowerCase()}">${section.priority}</span>
+                    <div class="timeline-item" style="animation: fadeScale 0.3s ease-out ${index * 0.1}s both;">
+                        <div class="timeline-content">
+                            <div class="timeline-date">${section.timeline}</div>
+                            <h4 class="timeline-title">${section.title}</h4>
+                            <div class="timeline-details">
+                                ${section.content.map(item => `
+                                    <div class="timeline-detail-item">
+                                        <i data-feather="arrow-right"></i>
+                                        ${item}
+                                    </div>
+                                `).join('')}
+                            </div>
+                            ${section.priority ? `<span class="priority-badge priority-${section.priority.toLowerCase()}">${section.priority}</span>` : ''}
                         </div>
-                        <div class="roadmap-timeline">
-                            <i data-feather="clock"></i>
-                            ${section.timeline}
-                        </div>
-                        <div class="roadmap-content">
-                            ${section.content.map(item => `
-                                <div class="roadmap-item">
-                                    <i data-feather="arrow-right"></i>
-                                    ${item}
-                                </div>
-                            `).join('')}
-                        </div>
+                        <div class="timeline-marker"></div>
                     </div>
                 `).join('')}
             </div>
@@ -578,17 +600,21 @@ class VoicePM {
     
     renderProcessSteps(steps) {
         return `
-            <div class="process-steps">
+            <div class="process-flow">
                 ${steps.map((step, index) => `
-                    <div class="process-step" style="animation: slideIn 0.3s ease-out ${index * 0.1}s both;">
-                        <div class="step-number">${step.number}</div>
+                    <div class="process-step" style="animation: fadeScale 0.3s ease-out ${index * 0.1}s both;">
+                        <div class="step-number">${index + 1}</div>
                         <div class="step-content">
-                            <div class="step-action">${step.action}</div>
-                            <div class="step-details">${step.details}</div>
-                            <div class="step-outcome">
-                                <i data-feather="check-circle"></i>
-                                ${step.outcome}
+                            <div class="step-header">
+                                <div class="step-title">${step.action}</div>
                             </div>
+                            <div class="step-details">${step.details}</div>
+                            ${step.outcome ? `
+                                <div class="step-outcome">
+                                    <i data-feather="check-circle"></i>
+                                    ${step.outcome}
+                                </div>
+                            ` : ''}
                         </div>
                     </div>
                 `).join('')}
@@ -597,84 +623,87 @@ class VoicePM {
     }
     
     renderList(items) {
+        if (!Array.isArray(items)) {
+            console.warn('renderList received non-array input:', items);
+            items = [];
+        }
+        
         return `
-            <ul class="roadmap-content">
-                ${items.map((item, index) => `
-                    <div class="roadmap-item" style="animation: slideIn 0.3s ease-out ${index * 0.1}s both;">
-                        <i data-feather="arrow-right"></i>
-                        ${item}
-                    </div>
-                `).join('')}
-            </ul>
+            <div class="process-overview">
+                <div class="overview-content">
+                    ${items.map(item => `
+                        <div class="overview-item">
+                            <i data-feather="chevron-right"></i>
+                            ${typeof item === 'string' ? item : JSON.stringify(item)}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
         `;
     }
 
     async checkBackendHealth() {
         try {
-            console.log('Checking backend health...'); // Debug log
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
-
-            const response = await fetch(`${this.API_URL}/health`, {
-                signal: controller.signal,
-                headers: {
-                    'Accept': 'application/json',
-                    'Cache-Control': 'no-cache'
-                }
-            });
-
-            clearTimeout(timeoutId);
-            console.log('Health check response:', response.status); // Debug log
-
-            if (response.ok) {
-                const data = await response.json();
-                console.log('Health check data:', data); // Debug log
-                
-                this.isBackendAvailable = true;
-                this.isDemoMode = data.status === 'demo';
-                
+            const response = await fetch(`${this.API_URL}/health`);
+            const data = await response.json();
+            
+            this.isBackendAvailable = data.status === 'ok';
+            this.isDemoMode = data.demo_mode === true;
+            
+            // Update UI based on backend status
+            if (this.elements.modeBadge) {
                 if (this.isDemoMode) {
-                    console.log('Setting demo mode badge'); // Debug log
-                    this.elements.modeBadge.className = 'mode-badge demo';
+                    this.elements.modeBadge.style.display = 'flex';
                     this.elements.modeBadge.innerHTML = `
                         <i data-feather="radio"></i>
                         <span>Demo Mode</span>
                     `;
-                    this.showStatus('Running in demo mode - some features may be limited', 'warning');
                 } else {
-                    console.log('Setting production mode badge'); // Debug log
-                    this.elements.modeBadge.className = 'mode-badge production';
-                    this.elements.modeBadge.innerHTML = `
-                        <i data-feather="zap"></i>
-                        <span>Production</span>
-                    `;
+                    this.elements.modeBadge.style.display = 'none';
                 }
-            } else {
-                console.error('Health check failed:', response.status); // Debug log
-                throw new Error('Backend health check failed');
+                feather.replace();
             }
+            
+            console.log('Backend health check:', {
+                available: this.isBackendAvailable,
+                demoMode: this.isDemoMode
+            });
         } catch (error) {
-            console.error('API health check failed:', error);
+            console.error('Health check failed:', error);
+            this.isBackendAvailable = false;
+            this.isDemoMode = true;
             
-            // Don't show error message for periodic checks
-            if (!this.isBackendAvailable) {
-                this.showStatus('Unable to connect to server. Please try again later.', 'error');
+            if (this.elements.modeBadge) {
+                this.elements.modeBadge.style.display = 'flex';
+                this.elements.modeBadge.innerHTML = `
+                    <i data-feather="alert-triangle"></i>
+                    <span>Demo Mode (Offline)</span>
+                `;
+                feather.replace();
             }
-            
-            this.elements.modeBadge.className = 'mode-badge offline';
-            this.elements.modeBadge.innerHTML = `
-                <i data-feather="wifi-off"></i>
-                <span>Offline</span>
-            `;
-        } finally {
-            feather.replace();
         }
     }
 
-    // Cleanup method
     destroy() {
+        // Clear health check interval
         if (this.healthCheckInterval) {
             clearInterval(this.healthCheckInterval);
+        }
+        
+        // Remove event listeners
+        if (this.elements.uploadArea) {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                this.elements.uploadArea.removeEventListener(eventName, this.preventDefaults);
+                document.body.removeEventListener(eventName, this.preventDefaults);
+            });
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                this.elements.uploadArea.removeEventListener(eventName, this.highlight);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                this.elements.uploadArea.removeEventListener(eventName, this.unhighlight);
+            });
         }
     }
 }
