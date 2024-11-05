@@ -2,9 +2,12 @@ import json
 from fastapi import HTTPException
 from openai import OpenAI
 from prompts import TASK_SYSTEM_PROMPT, ROADMAP_SYSTEM_PROMPT, PROCESS_SYSTEM_PROMPT
+from utils.demo import get_demo_tasks, get_demo_roadmap, get_demo_process_doc
 
 def create_openrouter_client(api_key: str) -> OpenAI:
     """Create an OpenRouter client."""
+    if api_key == "demo_mode":
+        return None
     return OpenAI(
         base_url="https://openrouter.ai/api/v1",
         api_key=api_key,
@@ -16,8 +19,13 @@ def create_openrouter_client(api_key: str) -> OpenAI:
 
 async def process_transcript_to_tasks(transcript: str, openrouter_client: OpenAI) -> dict:
     """Process the transcript into tasks using Claude 3.5 Sonnet."""
+    # Check for demo mode
+    if openrouter_client is None:
+        print("Running in demo mode, returning mock data...")
+        return get_demo_tasks().dict()
+
     try:
-        if not openrouter_client or not hasattr(openrouter_client, 'chat'):
+        if not hasattr(openrouter_client, 'chat'):
             print("OpenRouter client not properly initialized")
             raise ValueError("API client not properly initialized")
 
@@ -81,8 +89,13 @@ async def process_transcript_to_tasks(transcript: str, openrouter_client: OpenAI
 
 async def process_transcript_to_roadmap(transcript: str, openrouter_client: OpenAI) -> dict:
     """Process the transcript into a strategic roadmap using Claude 3.5 Sonnet."""
+    # Check for demo mode
+    if openrouter_client is None:
+        print("Running in demo mode, returning mock data...")
+        return get_demo_roadmap().dict()
+
     try:
-        if not openrouter_client or not hasattr(openrouter_client, 'chat'):
+        if not hasattr(openrouter_client, 'chat'):
             print("OpenRouter client not properly initialized")
             raise ValueError("API client not properly initialized")
 
@@ -149,8 +162,13 @@ async def process_transcript_to_roadmap(transcript: str, openrouter_client: Open
 
 async def process_transcript_to_process_doc(transcript: str, openrouter_client: OpenAI) -> dict:
     """Process the transcript into a process document using Claude 3.5 Sonnet."""
+    # Check for demo mode
+    if openrouter_client is None:
+        print("Running in demo mode, returning mock data...")
+        return get_demo_process_doc().dict()
+
     try:
-        if not openrouter_client or not hasattr(openrouter_client, 'chat'):
+        if not hasattr(openrouter_client, 'chat'):
             print("OpenRouter client not properly initialized")
             raise ValueError("API client not properly initialized")
 

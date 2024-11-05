@@ -39,17 +39,10 @@ app.mount("/static", StaticFiles(directory=str(ROOT_DIR / "static")), name="stat
 openai_client = OpenAI(api_key=settings.OPENAI_API_KEY)
 openrouter_client = create_openrouter_client(settings.OPENROUTER_API_KEY)
 
-# Check if we have valid API keys
-DEMO_MODE = (
-    not settings.OPENAI_API_KEY or 
-    settings.OPENAI_API_KEY == "demo_mode"
-)
-
-if DEMO_MODE:
+if settings.DEMO_MODE:
     print("\n=== Running in DEMO MODE ===")
-    print("No valid API key found. The application will return mock data.")
-    print("To use real processing, set valid API key in the .env file:\n")
-    print("OPENAI_API_KEY=your_key_here\n")
+    print("Demo mode is enabled. The application will return mock data.")
+    print("To use real processing, set DEMO_MODE=false in .env\n")
 else:
     print("\n=== Running in PRODUCTION MODE ===")
     print("API clients initialized successfully\n")
@@ -59,7 +52,7 @@ app.include_router(audio_router)
 app.include_router(health_router)
 
 # Make dependencies available to routes
-app.state.demo_mode = DEMO_MODE
+app.state.demo_mode = settings.DEMO_MODE
 app.state.openai_client = openai_client
 app.state.openrouter_client = openrouter_client
 
@@ -70,5 +63,5 @@ async def read_root():
 
 if __name__ == "__main__":
     import uvicorn
-    print(f"\nStarting server in {'DEMO' if DEMO_MODE else 'PRODUCTION'} mode...")
+    print(f"\nStarting server in {'DEMO' if settings.DEMO_MODE else 'PRODUCTION'} mode...")
     uvicorn.run(app, host="0.0.0.0", port=8000)

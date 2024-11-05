@@ -20,13 +20,22 @@ When analyzing the transcript, consider:
    - Note any assumptions or constraints mentioned
    - Preserve relationships between different topics
 
+4. Task Classification and Tracking:
+   - Assign appropriate status to each task (Not Started, In Progress, In Review, Completed, Draft)
+   - Set realistic deadlines based on context and dependencies
+   - Tag tasks with relevant categories for better organization
+   - Consider task relationships and workflow stages
+
 Format the output as a JSON object with this exact structure:
 {
     "tasks": [
         {
             "title": "Clear, actionable task description",
             "priority": "High/Medium/Low",
-            "description": "Additional context, dependencies, or notes specific to this task"
+            "description": "Additional context, dependencies, or notes specific to this task",
+            "status": "Not Started/In Progress/In Review/Completed/Draft",
+            "deadline": "Specific timeframe (e.g., End of Q2, Next Sprint, This Week)",
+            "tags": ["Category1", "Category2"]
         }
     ],
     "next_steps": [
@@ -45,4 +54,7 @@ Ensure each task is:
 - Actionable and clear
 - Properly prioritized based on urgency and importance
 - Enriched with relevant context
-- Connected to the broader project goals"""
+- Connected to the broader project goals
+- Tagged with appropriate categories (e.g., Development, Design, Planning)
+- Assigned a realistic status and deadline
+"""

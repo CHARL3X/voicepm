@@ -5,6 +5,9 @@ class Task(BaseModel):
     title: str
     priority: str
     description: str | None = None
+    status: str | None = None
+    deadline: str | None = None
+    tags: List[str] | None = None
 
 class ProcessedOutput(BaseModel):
     tasks: List[Task]

@@ -9,6 +9,7 @@ Environment Variables:
     ANTHROPIC_API_KEY: API key for Anthropic services
     OPENROUTER_API_KEY: API key for OpenRouter services
     CORS_ORIGINS: List of allowed origins for CORS
+    DEMO_MODE: Enable demo mode (set to "true" to enable)
 
 The Settings class uses Pydantic for validation and provides default values
 where appropriate. Settings are loaded from environment variables or .env file.
@@ -21,6 +22,9 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     """Application settings with validation."""
+    
+    # Demo mode - defaults to False, enable through environment
+    DEMO_MODE: bool = os.getenv("DEMO_MODE", "").lower() == "true"
     
     # API Keys
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")

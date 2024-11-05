@@ -5,30 +5,49 @@ def get_demo_tasks() -> ProcessedOutput:
     return ProcessedOutput(
         tasks=[
             Task(
-                title="Review project timeline", 
+                title="Update brand guidelines", 
                 priority="High", 
-                description="[DEMO] Need to align with Q4 goals"
+                description="Review and finalize new color palette and typography",
+                status="In Progress",
+                deadline="End of Q2",
+                tags=["Design", "Brand"]
             ),
             Task(
-                title="Schedule team meeting", 
+                title="Customer feedback integration", 
+                priority="High", 
+                description="Implement top 3 most requested features from survey",
+                status="Not Started",
+                deadline="Next Sprint",
+                tags=["Development"]
+            ),
+            Task(
+                title="Team retrospective notes", 
                 priority="Medium", 
-                description="[DEMO] Include remote team members"
+                description="Document key findings from sprint review",
+                status="In Review",
+                deadline="This Week",
+                tags=["Planning"]
             ),
             Task(
                 title="Update documentation", 
                 priority="Low", 
-                description="[DEMO] Focus on new features"
+                description="Add new API endpoints to developer docs",
+                status="Draft",
+                deadline="Next Month",
+                tags=["Documentation"]
             )
         ],
         next_steps=[
-            "[DEMO] Complete timeline review by EOD",
-            "[DEMO] Send meeting invitation for tomorrow",
-            "[DEMO] Assign documentation tasks"
+            "Schedule design review meeting",
+            "Prioritize feature requests",
+            "Share retrospective summary",
+            "Create documentation template"
         ],
         notes=[
-            "[DEMO] Timeline needs adjustment for Q4",
-            "[DEMO] Include remote team members in meeting",
-            "[DEMO] Documentation update can wait until next week"
+            "Consider accessibility guidelines in brand update",
+            "Focus on high-impact features first",
+            "Include action items from retrospective",
+            "Link documentation to existing guides"
         ]
     )
 
@@ -41,9 +60,9 @@ def get_demo_roadmap() -> StrategicRoadmap:
                 priority="High",
                 timeline="Q1 2024",
                 content=[
-                    "[DEMO] Expanding market share in enterprise segment",
-                    "[DEMO] Growing demand for AI-powered solutions",
-                    "[DEMO] Competitive advantage in voice processing"
+                    "Expanding market share in enterprise segment",
+                    "Growing demand for AI-powered solutions",
+                    "Competitive advantage in voice processing"
                 ]
             )
         ],
@@ -53,9 +72,9 @@ def get_demo_roadmap() -> StrategicRoadmap:
                 priority="High",
                 timeline="Q1-Q2 2024",
                 content=[
-                    "[DEMO] Scale cloud infrastructure for enterprise load",
-                    "[DEMO] Implement advanced security measures",
-                    "[DEMO] Enhance AI processing capabilities"
+                    "Scale cloud infrastructure for enterprise load",
+                    "Implement advanced security measures",
+                    "Enhance AI processing capabilities"
                 ]
             )
         ],
@@ -65,9 +84,9 @@ def get_demo_roadmap() -> StrategicRoadmap:
                 priority="High",
                 timeline="Q1 2024",
                 content=[
-                    "[DEMO] API integration with enterprise systems",
-                    "[DEMO] Security compliance requirements",
-                    "[DEMO] Data processing capabilities"
+                    "API integration with enterprise systems",
+                    "Security compliance requirements",
+                    "Data processing capabilities"
                 ]
             )
         ],
@@ -77,9 +96,9 @@ def get_demo_roadmap() -> StrategicRoadmap:
                 priority="High",
                 timeline="Q1-Q4 2024",
                 content=[
-                    "[DEMO] Beta release to select enterprise customers",
-                    "[DEMO] Full enterprise feature rollout",
-                    "[DEMO] Global market expansion"
+                    "Beta release to select enterprise customers",
+                    "Full enterprise feature rollout",
+                    "Global market expansion"
                 ]
             )
         ],
@@ -89,62 +108,62 @@ def get_demo_roadmap() -> StrategicRoadmap:
                 priority="High",
                 timeline="Ongoing",
                 content=[
-                    "[DEMO] Enterprise customer acquisition rate",
-                    "[DEMO] User engagement metrics",
-                    "[DEMO] Processing accuracy benchmarks"
+                    "Enterprise customer acquisition rate",
+                    "User engagement metrics",
+                    "Processing accuracy benchmarks"
                 ]
             )
         ],
-        summary="[DEMO] Strategic roadmap for enterprise market expansion with focus on AI-powered voice processing capabilities."
+        summary="Strategic roadmap for enterprise market expansion with focus on AI-powered voice processing capabilities."
     )
 
 def get_demo_process_doc() -> ProcessDocument:
     """Return mock data for process documentation demo mode."""
     return ProcessDocument(
-        title="[DEMO] Deploying a New Feature to Production",
-        overview="[DEMO] A step-by-step guide for safely deploying new features to the production environment",
+        title="Deploying a New Feature to Production",
+        overview="A step-by-step guide for safely deploying new features to the production environment",
         prerequisites=[
-            "[DEMO] Access to the deployment pipeline",
-            "[DEMO] Completed code review",
-            "[DEMO] Passing test suite",
-            "[DEMO] Change request approval"
+            "Access to the deployment pipeline",
+            "Completed code review",
+            "Passing test suite",
+            "Change request approval"
         ],
         steps=[
             ProcessStep(
                 number=1,
                 action="Create deployment branch",
-                details="[DEMO] Create a new branch from main named 'deploy/feature-name'",
-                outcome="[DEMO] New deployment branch is ready"
+                details="Create a new branch from main named 'deploy/feature-name'",
+                outcome="New deployment branch is ready"
             ),
             ProcessStep(
                 number=2,
                 action="Run pre-deployment checks",
-                details="[DEMO] Execute the pre-deployment checklist including security scans",
-                outcome="[DEMO] All pre-deployment checks pass"
+                details="Execute the pre-deployment checklist including security scans",
+                outcome="All pre-deployment checks pass"
             ),
             ProcessStep(
                 number=3,
                 action="Deploy to staging",
-                details="[DEMO] Use the deployment pipeline to push changes to staging environment",
-                outcome="[DEMO] Feature is live in staging environment"
+                details="Use the deployment pipeline to push changes to staging environment",
+                outcome="Feature is live in staging environment"
             ),
             ProcessStep(
                 number=4,
                 action="Run smoke tests",
-                details="[DEMO] Execute the smoke test suite against staging environment",
-                outcome="[DEMO] All smoke tests pass"
+                details="Execute the smoke test suite against staging environment",
+                outcome="All smoke tests pass"
             ),
             ProcessStep(
                 number=5,
                 action="Deploy to production",
-                details="[DEMO] Use the deployment pipeline to push changes to production",
-                outcome="[DEMO] Feature is live in production"
+                details="Use the deployment pipeline to push changes to production",
+                outcome="Feature is live in production"
             )
         ],
         notes=[
-            "[DEMO] Always deploy during off-peak hours",
-            "[DEMO] Have rollback plan ready",
-            "[DEMO] Monitor error rates after deployment",
-            "[DEMO] Update documentation after successful deployment"
+            "Always deploy during off-peak hours",
+            "Have rollback plan ready",
+            "Monitor error rates after deployment",
+            "Update documentation after successful deployment"
         ]
     )

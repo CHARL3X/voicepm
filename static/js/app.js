@@ -529,40 +529,94 @@ class VoicePM {
         feather.replace();
     }
 
-    renderTasks(tasks) {
-        // First, organize tasks by priority
-        const tasksByPriority = {
-            High: [],
-            Medium: [],
-            Low: []
-        };
-        
-        tasks.forEach(task => {
-            if (tasksByPriority[task.priority]) {
-                tasksByPriority[task.priority].push(task);
-            }
-        });
+renderTasks(tasks) {
+    // First, organize tasks by priority
+    const tasksByPriority = {
+        High: [],
+        Medium: [],
+        Low: []
+    };
+    
+    tasks.forEach(task => {
+        if (tasksByPriority[task.priority]) {
+            tasksByPriority[task.priority].push(task);
+        }
+    });
 
-        return `
-            <div class="task-board">
+    // Calculate total and completed tasks
+    const totalTasks = tasks.length;
+    const completedTasks = tasks.filter(task => task.status === 'Completed').length;
+
+    return `
+        <div class="task-board-header">
+            <div class="task-board-title">
+                <h2>Task Overview</h2>
+                <div class="ai-badge">AI-Extracted</div>
+            </div>
+            <p class="text-secondary">Automatically organized by priority and context</p>
+        </div>
+
+        <div class="progress-overview">
+            <div class="progress-header">
+                <i data-feather="sparkles" class="text-primary"></i>
+                <div class="progress-info">
+                    <h3 class="text-primary font-medium mb-1">Task Progress</h3>
+                    <div class="progress-stats">
+                        <div>${completedTasks} of ${totalTasks} completed</div>
+                        <div class="divider"></div>
+                        <div class="text-primary">50% on track</div>
+                    </div>
+                </div>
+                <button class="btn-secondary">Export Tasks</button>
+            </div>
+            
+            <div class="priority-progress">
                 ${Object.entries(tasksByPriority).map(([priority, priorityTasks]) => `
-                    <div class="task-column" data-priority="${priority.toLowerCase()}">
-                        <div class="column-header">
-                            <i data-feather="${priority === 'High' ? 'alert-circle' : priority === 'Medium' ? 'clock' : 'check-circle'}"></i>
-                            <h4>${priority} Priority</h4>
-                            <span class="task-count">${priorityTasks.length}</span>
+                    <div class="priority-bar priority-${priority.toLowerCase()}">
+                        <div class="priority-bar-header">
+                            <span class="priority-label">${priority} Priority</span>
+                            <span class="task-count">${priorityTasks.length} tasks</span>
                         </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" style="width: ${(priorityTasks.filter(t => t.status === 'Completed').length / priorityTasks.length) * 100}%"></div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <div class="task-board">
+            ${Object.entries(tasksByPriority).map(([priority, priorityTasks]) => `
+                <div class="task-column">
+                    <div class="column-header">
+                        <div class="priority-indicator priority-${priority.toLowerCase()}"></div>
+                        <h3>${priority} Priority</h3>
+                        <span class="task-count">${priorityTasks.length}</span>
+                    </div>
+                    <div class="task-list">
                         ${priorityTasks.map((task, index) => `
-                            <div class="task-item" draggable="true" style="animation: fadeScale 0.3s ease-out ${index * 0.1}s both;">
-                                <div class="task-header">
-                                    <div class="task-checkbox" onclick="this.classList.toggle('checked')"></div>
-                                    <div class="task-content">
-                                        <div class="task-title">${task.title}</div>
-                                        ${task.description ? `<div class="task-description">${task.description}</div>` : ''}
+                            <div class="task-item" style="animation: fadeScale 0.3s ease-out ${index * 0.1}s both;">
+                                <div class="task-content">
+                                    <h4 class="task-title">${task.title}</h4>
+                                    ${task.description ? `<p class="task-description">${task.description}</p>` : ''}
+                                    <div class="task-meta">
+                                        <span class="task-priority ${priority.toLowerCase()}">${priority}</span>
+                                        ${task.status ? `
+                                            <span class="task-status">
+                                                <i data-feather="${task.status === 'Completed' ? 'check-circle' : 'clock'}" class="icon-sm"></i>
+                                                ${task.status}
+                                            </span>
+                                        ` : ''}
+                                        ${task.deadline ? `
+                                            <span class="task-deadline">
+                                                <i data-feather="calendar" class="icon-sm"></i>
+                                                ${task.deadline}
+                                            </span>
+                                        ` : ''}
+                                        ${task.tags ? task.tags.map(tag => `
+                                            <span class="task-tag">${tag}</span>
+                                        `).join('') : ''}
                                     </div>
-                                </div>
-                                <div class="task-meta">
-                                    <span class="priority-badge priority-${task.priority.toLowerCase()}">${task.priority}</span>
                                 </div>
                             </div>
                         `).join('')}
@@ -592,12 +646,12 @@ class VoicePM {
                             ${section.priority ? `<span class="priority-badge priority-${section.priority.toLowerCase()}">${section.priority}</span>` : ''}
                         </div>
                         <div class="timeline-marker"></div>
-                    </div>
-                `).join('')}
-            </div>
-        `;
-    }
-    
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
     renderProcessSteps(steps) {
         return `
             <div class="process-flow">
