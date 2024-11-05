@@ -1,0 +1,212 @@
+/* Roadmap Output Format - Strategic Timeline */
+.roadmap-container {
+    padding: var(--space-8) 0;
+}
+
+.roadmap-header {
+    margin-bottom: var(--space-8);
+}
+
+.roadmap-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+}
+
+.roadmap-title h2 {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Section Navigation */
+.roadmap-nav {
+    display: flex;
+    gap: var(--space-2);
+    margin-bottom: var(--space-8);
+    padding: var(--space-2);
+    background: var(--bg-accent);
+    border-radius: var(--radius-lg);
+    overflow-x: auto;
+}
+
+.nav-item {
+    padding: var(--space-2) var(--space-4);
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    border-radius: var(--radius);
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.nav-item:hover {
+    color: var(--text-primary);
+    background: rgba(var(--primary-color-rgb), 0.1);
+}
+
+.nav-item.active {
+    color: var(--primary-color);
+    background: rgba(var(--primary-color-rgb), 0.2);
+}
+
+/* Timeline Layout */
+.roadmap-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+}
+
+.timeline-section {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+}
+
+.timeline-section:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow), var(--glow);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.section-icon {
+    width: 32px;
+    height: 32px;
+    padding: var(--space-2);
+    border-radius: var(--radius);
+    background: rgba(var(--primary-color-rgb), 0.1);
+    color: var(--primary-color);
+}
+
+.section-title {
+    flex: 1;
+}
+
+.section-title h3 {
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: var(--space-1);
+}
+
+.section-meta {
+    display: flex;
+    gap: var(--space-2);
+    font-size: 0.75rem;
+}
+
+.timeline-priority {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+}
+
+.priority-high { 
+    background: rgba(var(--error-color-rgb), 0.2);
+    color: var(--error-color);
+}
+
+.priority-medium { 
+    background: rgba(var(--warning-color-rgb), 0.2);
+    color: var(--warning-color);
+}
+
+.priority-low { 
+    background: rgba(var(--success-color-rgb), 0.2);
+    color: var(--success-color);
+}
+
+.timeline-date {
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+/* Content Items */
+.section-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.content-item {
+    background: var(--bg-accent);
+    border-radius: var(--radius);
+    padding: var(--space-4);
+    transition: var(--transition);
+}
+
+.content-item:hover {
+    background: var(--bg-primary);
+    transform: translateX(var(--space-2));
+}
+
+/* Success Metrics */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-4);
+}
+
+.metric-card {
+    background: var(--bg-accent);
+    border-radius: var(--radius);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.metric-title {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.metric-value {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.metric-trend {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: 0.875rem;
+}
+
+.trend-up {
+    color: var(--success-color);
+}
+
+.trend-down {
+    color: var(--error-color);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .roadmap-nav {
+        padding: var(--space-1);
+    }
+    
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-2);
+    }
+}
