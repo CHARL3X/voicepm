@@ -92,6 +92,7 @@
                         <li><i data-feather="check"></i> Timeline Generation</li>
                     </ul>
                 </div>
+
                 <div class="format-card pro" data-format="roadmap">
                     <div class="format-preview">
                         <img src="static/images/roadmap-preview.svg" alt="Strategic Roadmap Preview">
@@ -119,6 +120,7 @@
                         <li><i data-feather="check"></i> Success Metrics</li>
                     </ul>
                 </div>
+
                 <div class="format-card pro" data-format="process">
                     <div class="format-preview">
                         <img src="static/images/process-preview.svg" alt="Process Documentation Preview">
@@ -149,11 +151,54 @@
             </div>
         </div>
 
+        <div id="progressContainer" class="progress-container" style="display: none;">
+            <div class="progress-header">
+                <div class="progress-stage">
+                    <i data-feather="upload-cloud"></i>
+                    <span id="progressStage">Preparing Upload...</span>
+                </div>
+                <div class="format-indicator">
+                    <i data-feather="check-square" id="formatIcon"></i>
+                    <span id="formatName">Task List</span>
+                </div>
+            </div>
+            <div class="progress-bar-wrapper">
+                <div id="progressBar" class="progress-bar" style="width: 0%"></div>
+            </div>
+            <div class="progress-stages">
+                <div class="stage-icon" data-stage="Upload"></div>
+                <div class="stage-icon" data-stage="Processing"></div>
+                <div class="stage-icon" data-stage="Analysis"></div>
+                <div class="stage-icon" data-stage="Refinement"></div>
+                <div class="stage-icon" data-stage="Complete"></div>
+            </div>
+            <div id="progressMessage" class="progress-message">Starting...</div>
+            <div id="progressTime" class="progress-time">Estimated time: 1-2 minutes</div>
+        </div>
+
         <div id="uploadArea" class="upload-area">
             <input type="file" id="fileInput" class="file-input" accept=".mp3,audio/mp3,.m4a,audio/m4a,.wav,audio/wav,audio/x-m4a">
             <i data-feather="upload-cloud" class="upload-icon"></i>
             <p class="upload-text">Start Your Productivity Revolution</p>
-            <p class="upload-subtext">Drop your voice memo or click to upload (MP3, M4A, WAV supported)</p>
+            <p class="upload-subtext">Drop your voice memo or click to upload</p>
+            <div class="file-requirements">
+                <div class="requirement requirement-tooltip" data-tooltip="MP3, M4A, WAV supported">
+                    <i data-feather="file-text"></i>
+                    <span>Supported Formats</span>
+                </div>
+                <div class="requirement requirement-tooltip" data-tooltip="Maximum file size: 25MB">
+                    <i data-feather="hard-drive"></i>
+                    <span>25MB Limit</span>
+                </div>
+                <div class="requirement requirement-tooltip" data-tooltip="Recommended: 1-30 minute recordings">
+                    <i data-feather="clock"></i>
+                    <span>1-30 Min Length</span>
+                </div>
+                <div class="requirement requirement-tooltip" data-tooltip="English audio only">
+                    <i data-feather="globe"></i>
+                    <span>English Only</span>
+                </div>
+            </div>
         </div>
         
         <div id="status" class="status"></div>
@@ -162,6 +207,10 @@
             <h2 class="audio-list-header">
                 <i data-feather="headphones"></i>
                 Your Voice Insights
+                <div id="outputFormat" class="format-indicator" style="display: none;">
+                    <i data-feather="check-square" id="outputFormatIcon"></i>
+                    <span id="outputFormatName">Task List</span>
+                </div>
             </h2>
             <!-- Audio files will be listed here -->
         </div>
@@ -228,7 +277,6 @@
 
     <script src="static/js/app.js"></script>
     <script>
-        // Initialize Feather icons
         document.addEventListener('DOMContentLoaded', () => {
             feather.replace();
         });
