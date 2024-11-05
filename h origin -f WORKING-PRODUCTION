@@ -1,0 +1,24 @@
+[33m5173435[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdesign/css-restructure[m[33m, [m[1;33mtag: [m[1;33mWORKING-PRODUCTION[m[33m, [m[1;31morigin/design/css-restructure[m[33m)[m HEAD@{0}: commit: <thinking>
+[33m46b642c[m HEAD@{1}: commit: refactor: modularize output formats & enhance deployment config
+[33mb1426f4[m HEAD@{2}: commit: Note: on output format selector cards, the 1st (task) card doesn't turn red when deselected like the others.
+[33me9c9bcf[m HEAD@{3}: commit: Unscatter BACKEND CONNECTED // Still needs formats aligned to new style.
+[33m2708832[m HEAD@{4}: commit: UNSCATTER - Rebranded: refactor(ui): enhance visual hierarchy and component spacing
+[33m86a2fce[m HEAD@{5}: commit: fixed the dumb lil file not found thing in GH extension for custom-elements
+[33m5431726[m HEAD@{6}: commit: Broke up STYLES.CSS into SMALLER MODULES. Added Progress Bar Stages to index.html
+[33mb5f0587[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m, [m[1;32mhelp[m[33m)[m HEAD@{7}: checkout: moving from design/css-restructure to design/css-restructure
+[33mb5f0587[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m, [m[1;32mhelp[m[33m)[m HEAD@{8}: checkout: moving from design/css-restructure to design/css-restructure
+[33mb5f0587[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m, [m[1;32mhelp[m[33m)[m HEAD@{9}: checkout: moving from design/css-restructure to design/css-restructure
+[33mb5f0587[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m, [m[1;32mhelp[m[33m)[m HEAD@{10}: checkout: moving from main to design/css-restructure
+[33mb5f0587[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m, [m[1;32mhelp[m[33m)[m HEAD@{11}: commit: Update OpenRouter client configuration
+[33m281625e[m HEAD@{12}: commit: Update API keys and CSS structure
+[33m5a98dc4[m HEAD@{13}: commit: Enhanced error handling for API connections
+[33mc6cc65c[m HEAD@{14}: commit: Initial commit: Voxify application with deployment configuration
+[33m12356cb[m HEAD@{15}: commit: Fix API URL to use voicepm-backend.onrender.com instead of api.voxify.app
+[33mcc89596[m HEAD@{16}: commit: Update configuration for proper CORS handling and document environment variables
+[33m3f5bdc0[m HEAD@{17}: commit: Add process documentation format
+[33m13efb69[m HEAD@{18}: commit: Add process format support with demo data
+[33mb8e95be[m HEAD@{19}: commit: Update embed.html with Voxify branding and height adjustment
+[33m53f0eee[m HEAD@{20}: commit: Add enhanced UI/UX to embed version
+[33mbbf34f3[m HEAD@{21}: commit: Add simplified embed version
+[33m03a8bf8[m HEAD@{22}: Branch: renamed refs/heads/master to refs/heads/main
+[33m03a8bf8[m HEAD@{24}: commit (initial): Initial commit: VoicePM - Voice-to-Task Converter with Wix Integration
