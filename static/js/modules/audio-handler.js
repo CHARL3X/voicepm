@@ -150,7 +150,8 @@ export class AudioHandler {
             const endpoints = {
                 tasks: '/process-audio',
                 roadmap: '/process-audio/roadmap',
-                process: '/process-audio/process'
+                process: '/process-audio/process',
+                constellation: '/process-audio/constellation'
             };
 
             const endpoint = endpoints[this.voicePM.selectedFormat];

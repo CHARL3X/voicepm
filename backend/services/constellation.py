@@ -3,9 +3,9 @@
 import json
 from typing import Dict, Any
 
-from ..models.constellation import ConstellationOutput
-from ..prompts.constellation_prompt import CONSTELLATION_SYSTEM_PROMPT, CONSTELLATION_USER_PROMPT
-from ..utils.demo_constellation import get_demo_constellation
+from models.constellation import ConstellationOutput
+from prompts.constellation_prompt import CONSTELLATION_SYSTEM_PROMPT, CONSTELLATION_USER_PROMPT
+from utils.demo_constellation import get_demo_constellation
 
 class ConstellationService:
     """Service for processing audio transcripts into constellation format"""

@@ -85,8 +85,8 @@ class ConstellationOutput(BaseModel):
     role_assignments: List[RoleAssignment] = Field(default_factory=list)
     dependencies: List[Dependency] = Field(default_factory=list)
 
-    class Config:
-        schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "title": "Product Launch Strategy",
                 "summary": "Team sync on Cleanse landing page and launch timeline",
@@ -116,3 +116,4 @@ class ConstellationOutput(BaseModel):
                 }
             }
         }
+    }
