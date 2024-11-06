@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unscatter - From Scattered Thoughts to Clear Action</title>
     <link rel="stylesheet" href="static/css/styles.css">
+    <link rel="stylesheet" href="static/css/components/constellation-output.css">
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
     <div class="container">
+        <!-- Header section -->
         <header class="app-header">
             <h1 class="app-title">
                 Unscatter
@@ -24,6 +26,7 @@
             </p>
         </header>
 
+        <!-- Features grid -->
         <div class="features-grid">
             <div class="feature-card">
                 <i data-feather="mic" class="feature-icon"></i>
@@ -42,6 +45,7 @@
             </div>
         </div>
 
+        <!-- Progress steps -->
         <div class="progress-steps">
             <div class="step active">
                 <div class="step-number">1</div>
@@ -59,12 +63,14 @@
             </div>
         </div>
 
+        <!-- Format selector -->
         <div id="formatSelector" class="format-selector">
             <h2 class="format-header">
                 <i data-feather="layout"></i>
                 Choose Your Output Format
             </h2>
             <div class="format-grid">
+                <!-- Task List -->
                 <div class="format-card active" data-format="tasks">
                     <div class="format-preview">
                         <img src="static/images/task-preview.svg" alt="Task List Preview">
@@ -94,6 +100,7 @@
                     </ul>
                 </div>
 
+                <!-- Strategic Roadmap -->
                 <div class="format-card pro" data-format="roadmap">
                     <div class="format-preview">
                         <img src="static/images/roadmap-preview.svg" alt="Strategic Roadmap Preview">
@@ -123,6 +130,7 @@
                     </ul>
                 </div>
 
+                <!-- Process Documentation -->
                 <div class="format-card pro" data-format="process">
                     <div class="format-preview">
                         <img src="static/images/process-preview.svg" alt="Process Documentation Preview">
@@ -131,29 +139,60 @@
                         </div>
                     </div>
                     <div class="format-icon">
-                        <i data-feather="file-text"></i>
+                        <i data-feather="book"></i>
                         <span class="format-badge pro">Pro</span>
                     </div>
                     <h3>Process Documentation</h3>
-                    <div class="format-subtitle">Knowledge, Crystallized</div>
-                    <p>Convert stream-of-consciousness explanations into clear, structured documentation</p>
+                    <div class="format-subtitle">Clear Steps, Better Results</div>
+                    <p>Convert complex explanations into clear, step-by-step documentation</p>
                     <div class="format-best-for">
                         <span class="best-for-label">Perfect for:</span>
                         <ul class="use-cases">
-                            <li>Standard Operating Procedures</li>
-                            <li>Training Materials</li>
-                            <li>Technical Guides</li>
+                            <li>Team Training</li>
+                            <li>System Procedures</li>
+                            <li>Knowledge Base</li>
                         </ul>
                     </div>
                     <ul class="format-features">
-                        <li><i data-feather="check"></i> Step-by-Step Breakdown</li>
-                        <li><i data-feather="check"></i> Clear Prerequisites</li>
-                        <li><i data-feather="check"></i> Expected Outcomes</li>
+                        <li><i data-feather="check"></i> Step Breakdown</li>
+                        <li><i data-feather="check"></i> Visual Guides</li>
+                        <li><i data-feather="check"></i> Success Criteria</li>
+                    </ul>
+                </div>
+
+                <!-- Constellation Format -->
+                <div class="format-card pro" data-format="constellation">
+                    <div class="format-preview">
+                        <img src="static/images/constellation-preview.svg" alt="Constellation Format Preview">
+                        <div class="preview-overlay">
+                            <span>See Example</span>
+                        </div>
+                    </div>
+                    <div class="format-icon">
+                        <i data-feather="star"></i>
+                        <span class="format-badge pro">Pro</span>
+                    </div>
+                    <h3>Constellation Format</h3>
+                    <div class="format-subtitle">Patterns & Insights Revealed</div>
+                    <p>Transform conversations into interconnected insights with intelligent pattern recognition</p>
+                    <div class="format-best-for">
+                        <span class="best-for-label">Perfect for:</span>
+                        <ul class="use-cases">
+                            <li>Meeting Analysis</li>
+                            <li>Decision Mapping</li>
+                            <li>Strategic Planning</li>
+                        </ul>
+                    </div>
+                    <ul class="format-features">
+                        <li><i data-feather="check"></i> Pattern Recognition</li>
+                        <li><i data-feather="check"></i> Relationship Mapping</li>
+                        <li><i data-feather="check"></i> Sentiment Analysis</li>
                     </ul>
                 </div>
             </div>
         </div>
 
+        <!-- Rest of the content remains unchanged -->
         <div id="progressContainer" class="progress-container" style="display: none;">
             <div class="progress-header">
                 <div class="progress-stage">
