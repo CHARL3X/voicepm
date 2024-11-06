@@ -1,6 +1,8 @@
+import { ConstellationHandler } from './constellation-handler.js';
+
 /**
- * Format Handler Module
- * Manages format selection and related UI updates
+ * FormatHandler Module
+ * Manages output format selection and rendering
  */
 export class FormatHandler {
     constructor(voicePM) {
@@ -17,8 +19,13 @@ export class FormatHandler {
             process: {
                 main: 'Document Your Expert Knowledge',
                 sub: 'Record your process explanation and let AI structure it perfectly'
+            },
+            constellation: {
+                main: 'Transform Conversations into Insights',
+                sub: 'Upload a meeting recording to discover patterns and relationships'
             }
         };
+        this.constellationHandler = new ConstellationHandler(voicePM);
     }
 
     /**
@@ -56,40 +63,86 @@ export class FormatHandler {
     updateFormatUI(selectedCard) {
         document.querySelectorAll('.format-card').forEach(card => {
             card.classList.remove('active');
-            card.style.transform = '';
-            card.style.boxShadow = '';
-            console.log('Removed active class from:', card.dataset.format);
         });
-        
         selectedCard.classList.add('active');
-        selectedCard.style.transform = 'translateY(-4px)';
-        selectedCard.style.boxShadow = 'var(--shadow-lg), var(--glow)';
-        console.log('Added active class to:', selectedCard.dataset.format);
     }
 
     /**
-     * Update upload area text based on selected format
+     * Update upload section text based on selected format
      */
     updateUploadText(format) {
-        const uploadText = this.voicePM.elements.uploadArea.querySelector('.upload-text');
-        const uploadSubtext = this.voicePM.elements.uploadArea.querySelector('.upload-subtext');
-        
-        if (this.formatTexts[format]) {
-            uploadText.textContent = this.formatTexts[format].main;
-            uploadSubtext.textContent = this.formatTexts[format].sub;
-            console.log('Updated upload area text for format:', format);
+        const formatText = this.formatTexts[format];
+        if (!formatText) return;
+
+        const mainText = document.querySelector('.upload-title');
+        const subText = document.querySelector('.upload-subtitle');
+
+        if (mainText) mainText.textContent = formatText.main;
+        if (subText) subText.textContent = formatText.sub;
+    }
+
+    /**
+     * Render the processed output in the selected format
+     */
+    renderOutput(data) {
+        const outputContainer = document.querySelector('.output-container');
+        if (!outputContainer) return;
+
+        // Clear previous output
+        outputContainer.innerHTML = '';
+
+        try {
+            let output;
+            if (this.voicePM.selectedFormat === 'constellation') {
+                output = this.constellationHandler.render(data);
+            } else {
+                // Handle other formats
+                output = this.createDefaultOutput(data);
+            }
+
+            outputContainer.appendChild(output);
+
+            // Initialize Feather icons
+            if (window.feather) {
+                window.feather.replace({
+                    'stroke-width': 1.5,
+                    width: 16,
+                    height: 16
+                });
+            }
+
+            this.voicePM.showStatus('Content processed successfully!', 'success');
+        } catch (error) {
+            console.error('Error rendering output:', error);
+            outputContainer.innerHTML = `
+                <div class="error-message">
+                    <i data-feather="alert-circle"></i>
+                    <p>Error rendering output. Please try again.</p>
+                </div>
+            `;
+            this.voicePM.showStatus('Error processing content. Please try again.', 'error');
         }
     }
 
     /**
-     * Get button text based on format
+     * Create default output for other formats
      */
-    getProcessButtonText(format) {
-        const buttonTexts = {
-            tasks: 'Extract Tasks',
-            roadmap: 'Generate Roadmap',
-            process: 'Create Documentation'
-        };
-        return buttonTexts[format] || 'Process Audio';
+    createDefaultOutput(data) {
+        const container = document.createElement('div');
+        container.className = 'default-output';
+        container.innerHTML = `
+            <div class="output-content">
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            </div>
+        `;
+        return container;
+    }
+
+    /**
+     * Check if current format is premium
+     */
+    isCurrentFormatPremium() {
+        const premiumFormats = ['roadmap', 'process', 'constellation'];
+        return premiumFormats.includes(this.voicePM.selectedFormat);
     }
 }

@@ -1,105 +1,23 @@
 /* Base Styles */
-@import 'base/variables.css';
 @import 'base/reset.css';
+@import 'base/variables.css';
+
+/* Animations */
+@import 'animations/transitions.css';
 
 /* Layout */
 @import 'layout/grid.css';
 @import 'layout/header.css';
 
 /* Components */
+@import 'components/marketing.css';
 @import 'components/cards.css';
 @import 'components/badges.css';
+@import 'components/steps.css';
 @import 'components/upload.css';
 @import 'components/progress.css';
-@import 'components/marketing.css';
-@import 'components/steps.css';
-
-/* Output Formats - Load after other components */
+@import 'components/testimonials.css';
 @import 'components/output-formats.css';
-
-/* Animations */
-@import 'animations/transitions.css';
-
-/* Additional Global Styles */
-.processed-content {
-    margin-top: var(--space-6);
-    padding: var(--space-6);
-    background: var(--bg-secondary);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border-color);
-}
-
-.processed-content h3 {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    color: var(--text-primary);
-    font-size: 1.25rem;
-    margin-bottom: var(--space-4);
-    padding-bottom: var(--space-4);
-    border-bottom: 1px solid var(--border-color);
-}
-
-.processed-content h3 i {
-    color: var(--primary-color);
-    width: 24px;
-    height: 24px;
-}
-
-.processed-content > *:not(:last-child) {
-    margin-bottom: var(--space-8);
-}
-
-/* Process Overview Styles */
-.process-overview {
-    color: var(--text-secondary);
-    line-height: 1.6;
-    padding: var(--space-4);
-    background: var(--bg-accent);
-    border-radius: var(--radius);
-    margin-bottom: var(--space-4);
-    font-size: 0.875rem;
-}
-
-/* Enhanced Icons */
-[data-feather] {
-    stroke-width: 2;
-    vector-effect: non-scaling-stroke;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    transition: var(--transition);
-}
-
-/* Loading Animation */
-.loading {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--bg-accent);
-    border-top-color: var(--primary-color);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .processed-content {
-        padding: var(--space-4);
-        margin-top: var(--space-4);
-    }
-
-    .processed-content h3 {
-        font-size: 1.125rem;
-        margin-bottom: var(--space-3);
-        padding-bottom: var(--space-3);
-    }
-
-    .processed-content > *:not(:last-child) {
-        margin-bottom: var(--space-6);
-    }
-}
+@import 'components/task-output.css';
+@import 'components/roadmap-output.css';
+@import 'components/process-output.css';

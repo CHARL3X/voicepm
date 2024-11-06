@@ -1,0 +1,94 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background Pattern -->
+    <rect width="400" height="300" fill="#1A1A1A"/>
+    <path d="M0 0h400v300H0z" fill="url(#stardust)"/>
+    
+    <!-- Central Star -->
+    <circle cx="200" cy="150" r="30" fill="url(#centerGlow)" filter="url(#glow)"/>
+    <circle cx="200" cy="150" r="25" fill="#6200EA" class="pulse"/>
+    
+    <!-- Orbital Insights -->
+    <g class="orbits">
+        <!-- Top Orbit -->
+        <circle cx="200" cy="70" r="15" fill="#00BFA5"/>
+        <path d="M200 145L200 85" stroke="#4A4A4A" stroke-width="2" stroke-dasharray="4 4"/>
+        
+        <!-- Right Orbit -->
+        <circle cx="280" cy="150" r="15" fill="#FF5252"/>
+        <path d="M205 150L265 150" stroke="#4A4A4A" stroke-width="2" stroke-dasharray="4 4"/>
+        
+        <!-- Bottom Orbit -->
+        <circle cx="200" cy="230" r="15" fill="#FFB300"/>
+        <path d="M200 155L200 215" stroke="#4A4A4A" stroke-width="2" stroke-dasharray="4 4"/>
+        
+        <!-- Left Orbit -->
+        <circle cx="120" cy="150" r="15" fill="#2979FF"/>
+        <path d="M195 150L135 150" stroke="#4A4A4A" stroke-width="2" stroke-dasharray="4 4"/>
+    </g>
+    
+    <!-- Connection Lines -->
+    <g class="connections">
+        <path d="M135 150L280 70" stroke="#4A4A4A" stroke-width="1" stroke-dasharray="4 4"/>
+        <path d="M280 150L200 70" stroke="#4A4A4A" stroke-width="1" stroke-dasharray="4 4"/>
+        <path d="M120 150L200 230" stroke="#4A4A4A" stroke-width="1" stroke-dasharray="4 4"/>
+    </g>
+    
+    <!-- Small Stars -->
+    <g class="stars">
+        <circle cx="160" cy="100" r="2" fill="#FFFFFF" opacity="0.5"/>
+        <circle cx="240" cy="200" r="2" fill="#FFFFFF" opacity="0.5"/>
+        <circle cx="140" cy="180" r="2" fill="#FFFFFF" opacity="0.5"/>
+        <circle cx="260" cy="120" r="2" fill="#FFFFFF" opacity="0.5"/>
+    </g>
+    
+    <!-- Definitions -->
+    <defs>
+        <!-- Star Dust Pattern -->
+        <pattern id="stardust" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
+            <circle cx="25" cy="25" r="1" fill="#FFFFFF" opacity="0.1"/>
+            <circle cx="10" cy="10" r="1" fill="#FFFFFF" opacity="0.1"/>
+            <circle cx="40" cy="40" r="1" fill="#FFFFFF" opacity="0.1"/>
+        </pattern>
+        
+        <!-- Center Glow -->
+        <radialGradient id="centerGlow" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0%" stop-color="#6200EA" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#6200EA" stop-opacity="0"/>
+        </radialGradient>
+        
+        <!-- Glow Filter -->
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="5"/>
+        </filter>
+    </defs>
+    
+    <!-- Animation -->
+    <style>
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+            transform-origin: center;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+            100% { opacity: 0.3; }
+        }
+        .stars circle {
+            animation: twinkle 3s infinite;
+        }
+        .stars circle:nth-child(2) {
+            animation-delay: -1s;
+        }
+        .stars circle:nth-child(3) {
+            animation-delay: -2s;
+        }
+        .stars circle:nth-child(4) {
+            animation-delay: -1.5s;
+        }
+    </style>
+</svg>
