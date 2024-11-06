@@ -31,7 +31,7 @@ export class UIHandler {
                     console.log('Card clicked:', card.dataset.format);
                     e.preventDefault();
                     e.stopPropagation();
-                    this.voicePM.handleFormatSelect(card);
+                    this.voicePM.formatHandler.handleFormatSelect(card);
                 });
                 
                 this.addCardHoverEffects(card);
@@ -75,9 +75,10 @@ export class UIHandler {
             this.voicePM.elements.uploadArea.addEventListener(eventName, () => this.unhighlight(), false);
         });
 
-        this.voicePM.elements.uploadArea.addEventListener('drop', (e) => this.voicePM.handleDrop(e), false);
+        // Update these event listeners to use audioHandler directly
+        this.voicePM.elements.uploadArea.addEventListener('drop', (e) => this.voicePM.audioHandler.handleDrop(e), false);
         this.voicePM.elements.uploadArea.addEventListener('click', () => this.voicePM.elements.fileInput.click());
-        this.voicePM.elements.fileInput.addEventListener('change', (e) => this.voicePM.handleFileSelect(e));
+        this.voicePM.elements.fileInput.addEventListener('change', (e) => this.voicePM.audioHandler.handleFileSelect(e));
     }
 
     /**

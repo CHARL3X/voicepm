@@ -44,18 +44,33 @@ export class VoicePM {
             audioList: document.getElementById('audioList'),
             modeBadge: document.getElementById('modeBadge'),
             formatSelector: document.getElementById('formatSelector'),
-            steps: document.querySelectorAll('.step')
+            steps: document.querySelectorAll('.step'),
+            uploadText: document.querySelector('.upload-text'),
+            uploadSubtext: document.querySelector('.upload-subtext'),
+            outputFormat: document.getElementById('outputFormat'),
+            outputFormatIcon: document.getElementById('outputFormatIcon'),
+            outputFormatName: document.getElementById('outputFormatName')
         };
+
+        // Ensure audioList is visible
+        if (this.elements.audioList) {
+            this.elements.audioList.style.display = 'block';
+        }
+
+        // Log element initialization
+        console.log('Elements initialized:', Object.keys(this.elements).filter(key => this.elements[key]));
     }
 
     /**
      * Initialize application modules
      */
     initializeModules() {
-        this.uiHandler = new UIHandler(this);
-        this.formatHandler = new FormatHandler(this);
+        // Initialize handlers in correct order
         this.audioHandler = new AudioHandler(this);
+        this.formatHandler = new FormatHandler(this);
+        this.uiHandler = new UIHandler(this);
         this.contentRenderer = new ContentRenderer(this);
+        console.log('Modules initialized');
     }
 
     /**
@@ -65,6 +80,43 @@ export class VoicePM {
         this.checkBackendHealth();
         this.initializeAnimations();
         this.startHealthCheck();
+        this.setupInitialState();
+    }
+
+    /**
+     * Set up initial application state
+     */
+    setupInitialState() {
+        // Set initial format
+        const defaultFormat = document.querySelector('.format-card[data-format="tasks"]');
+        if (defaultFormat) {
+            this.formatHandler.handleFormatSelect(defaultFormat);
+        }
+
+        // Update output format display
+        this.updateOutputFormat('tasks');
+    }
+
+    /**
+     * Update output format display
+     */
+    updateOutputFormat(format) {
+        if (this.elements.outputFormat && this.elements.outputFormatName) {
+            this.elements.outputFormat.style.display = 'flex';
+            this.elements.outputFormatName.textContent = format.charAt(0).toUpperCase() + format.slice(1);
+            
+            // Update icon based on format
+            if (this.elements.outputFormatIcon) {
+                const icons = {
+                    tasks: 'check-square',
+                    roadmap: 'git-branch',
+                    process: 'book',
+                    constellation: 'star'
+                };
+                this.elements.outputFormatIcon.setAttribute('data-feather', icons[format] || 'check-square');
+                feather.replace();
+            }
+        }
     }
 
     /**
@@ -152,6 +204,8 @@ export class VoicePM {
      * Show status message
      */
     showStatus(message, type) {
+        if (!this.elements.status) return;
+
         this.elements.status.textContent = message;
         this.elements.status.className = 'status ' + type;
         this.elements.status.classList.add('visible');

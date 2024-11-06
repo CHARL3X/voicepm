@@ -43,6 +43,14 @@ export class FormatHandler {
         this.updateFormatUI(card);
         this.updateUploadText(format);
         this.voicePM.updateSteps(2);
+        
+        // Show the upload area and audio list
+        if (this.voicePM.elements.uploadArea) {
+            this.voicePM.elements.uploadArea.style.display = 'block';
+        }
+        if (this.voicePM.elements.audioList) {
+            this.voicePM.elements.audioList.style.display = 'block';
+        }
     }
 
     /**
@@ -74,11 +82,24 @@ export class FormatHandler {
         const formatText = this.formatTexts[format];
         if (!formatText) return;
 
-        const mainText = document.querySelector('.upload-title');
-        const subText = document.querySelector('.upload-subtitle');
+        const mainText = document.querySelector('.upload-text');
+        const subText = document.querySelector('.upload-subtext');
 
         if (mainText) mainText.textContent = formatText.main;
         if (subText) subText.textContent = formatText.sub;
+    }
+
+    /**
+     * Get process button text based on format
+     */
+    getProcessButtonText(format) {
+        const texts = {
+            tasks: 'Create Task List',
+            roadmap: 'Generate Roadmap',
+            process: 'Create Documentation',
+            constellation: 'Map Insights'
+        };
+        return texts[format] || 'Process Audio';
     }
 
     /**
