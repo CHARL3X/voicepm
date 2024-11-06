@@ -27,6 +27,9 @@ export class ContentRenderer {
             case 'process':
                 sections = this.getProcessSections(data);
                 break;
+            case 'constellation':
+                sections = this.getConstellationSections(data);
+                break;
         }
         
         processedContent.innerHTML = this.renderSections(sections);
@@ -44,6 +47,154 @@ export class ContentRenderer {
         if (ctaSection) {
             ctaSection.classList.add('visible');
         }
+    }
+
+    /**
+     * Get sections for constellation format
+     */
+    getConstellationSections(data) {
+        return [
+            {
+                title: 'Central Theme',
+                icon: 'star',
+                content: this.renderCentralStar(data.central_star)
+            },
+            {
+                title: 'Orbital Insights',
+                icon: 'circle',
+                content: this.renderOrbits(data.orbits)
+            },
+            {
+                title: 'Timeline',
+                icon: 'clock',
+                content: this.renderTimeline(data.timeline)
+            },
+            {
+                title: 'Support Elements',
+                icon: 'help-circle',
+                content: this.renderSupportElements(data.support)
+            },
+            {
+                title: 'Patterns & Relationships',
+                icon: 'git-branch',
+                content: this.renderPatterns(data)
+            }
+        ];
+    }
+
+    /**
+     * Render central star section
+     */
+    renderCentralStar(star) {
+        return `
+            <div class="constellation-star">
+                <h3 class="star-title">${star.title}</h3>
+                <p class="star-description">${star.description}</p>
+                ${star.timeline ? `<div class="star-timeline">${star.timeline}</div>` : ''}
+                ${star.impact ? `<div class="star-impact">${star.impact}</div>` : ''}
+            </div>
+        `;
+    }
+
+    /**
+     * Render orbits section
+     */
+    renderOrbits(orbits) {
+        return `
+            <div class="constellation-orbits">
+                ${orbits.map(orbit => `
+                    <div class="orbit-item">
+                        <div class="orbit-header">
+                            <h4>${orbit.title}</h4>
+                            ${orbit.sentiment ? `<span class="sentiment-badge ${orbit.sentiment}">${orbit.sentiment}</span>` : ''}
+                            ${orbit.priority ? `<span class="priority-badge ${orbit.priority}">${orbit.priority}</span>` : ''}
+                        </div>
+                        <ul class="orbit-points">
+                            ${orbit.points.map(point => `<li>${point}</li>`).join('')}
+                        </ul>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    /**
+     * Render timeline section
+     */
+    renderTimeline(timeline) {
+        return `
+            <div class="constellation-timeline">
+                ${timeline.map(marker => `
+                    <div class="timeline-marker">
+                        <div class="marker-date">${marker.date}</div>
+                        <div class="marker-title">${marker.title}</div>
+                        ${marker.description ? `<div class="marker-description">${marker.description}</div>` : ''}
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    /**
+     * Render support elements section
+     */
+    renderSupportElements(support) {
+        return `
+            <div class="constellation-support">
+                ${support.questions.length > 0 ? `
+                    <div class="support-section">
+                        <h4>Questions</h4>
+                        <ul>
+                            ${support.questions.map(q => `<li>${q}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+                ${support.actions.length > 0 ? `
+                    <div class="support-section">
+                        <h4>Actions</h4>
+                        <ul>
+                            ${support.actions.map(a => `<li>${a}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    }
+
+    /**
+     * Render patterns section
+     */
+    renderPatterns(data) {
+        return `
+            <div class="constellation-patterns">
+                ${data.sentiment_patterns ? `
+                    <div class="pattern-section">
+                        <h4>Sentiment Patterns</h4>
+                        ${data.sentiment_patterns.map(pattern => `
+                            <div class="sentiment-pattern ${pattern.type}">
+                                <span class="pattern-type">${pattern.type}</span>
+                                <span class="pattern-confidence">${Math.round(pattern.confidence * 100)}%</span>
+                                <div class="pattern-markers">${pattern.markers.join(', ')}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
+                ${data.decision_flows ? `
+                    <div class="pattern-section">
+                        <h4>Decision Flows</h4>
+                        ${data.decision_flows.map(flow => `
+                            <div class="decision-flow">
+                                <div class="flow-initial">${flow.initial}</div>
+                                <div class="flow-progression">
+                                    ${flow.progression.map(step => `<div class="flow-step">${step}</div>`).join('')}
+                                </div>
+                                ${flow.final ? `<div class="flow-final">${flow.final}</div>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
+            </div>
+        `;
     }
 
     /**
