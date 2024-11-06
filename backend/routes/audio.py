@@ -1,13 +1,14 @@
 import os
 from fastapi import APIRouter, File, UploadFile, HTTPException, Request
 from openai import OpenAI
-from models import ProcessedOutput, StrategicRoadmap, ProcessDocument
+from models import ProcessedOutput, StrategicRoadmap, ProcessDocument, ConstellationOutput
 from services import (
     process_transcript_to_tasks,
     process_transcript_to_roadmap,
     process_transcript_to_process_doc
 )
-from utils import get_demo_tasks, get_demo_roadmap, get_demo_process_doc
+from utils import get_demo_tasks, get_demo_roadmap, get_demo_process_doc, get_demo_constellation
+from services.constellation import ConstellationService
 
 router = APIRouter()
 
@@ -155,6 +156,14 @@ async def process_audio_to_process_doc(
     file: UploadFile = File(...)
 ):
     """Process an audio file into a process document."""
+    # [Existing implementation remains unchanged]
+
+@router.post("/process-audio/constellation", response_model=ConstellationOutput)
+async def process_audio_to_constellation(
+    request: Request,
+    file: UploadFile = File(...)
+):
+    """Process an audio file into a constellation format."""
     # Enhanced MIME type validation
     if file.content_type not in ALLOWED_MIME_TYPES:
         raise HTTPException(
@@ -173,7 +182,7 @@ async def process_audio_to_process_doc(
         )
     
     if request.app.state.demo_mode:
-        return get_demo_process_doc()
+        return get_demo_constellation()
     
     # Save uploaded file temporarily
     temp_path = f"temp_{file.filename}"
@@ -194,10 +203,11 @@ async def process_audio_to_process_doc(
                 detail=f"Error transcribing audio: {str(e)}"
             )
             
-        # Step 2: Process transcript into process doc
+        # Step 2: Process transcript into constellation format
         try:
-            structured_data = await process_transcript_to_process_doc(transcript.text, request.app.state.openrouter_client)
-            return ProcessDocument(**structured_data)
+            constellation_service = ConstellationService(request.app.state.openrouter_client)
+            structured_data = await constellation_service.process_transcript(transcript.text)
+            return ConstellationOutput(**structured_data)
         except Exception as e:
             raise HTTPException(
                 status_code=500,

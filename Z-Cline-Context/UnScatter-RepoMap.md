@@ -1,7 +1,7 @@
 # VoicePM Repository Guide: Complete Architecture & Relationships
 
 ## 🌟 Core Purpose
-VoicePM is a voice-to-structured-content application that converts spoken thoughts into organized formats like task lists, roadmaps, and process documentation.
+VoicePM (Unscatter) is a voice-to-structured-content application that converts spoken thoughts into organized formats like task lists, roadmaps, process documentation, and constellation maps.
 
 ## 📁 Repository Structure
 
@@ -55,12 +55,19 @@ Data structure definitions using Pydantic:
   - ProcessDocument: title, overview, prerequisites, steps, notes
   ```
 
+- `constellation.py`:
+  ```python
+  - ConstellationNode: id, title, type, connections
+  - ConstellationMap: nodes, relationships, insights, patterns
+  ```
+
 #### Prompts (`/backend/prompts/`)
 AI system prompts for different output formats:
 
 - `task_prompt.py`: Structures voice input into actionable tasks
 - `roadmap_prompt.py`: Creates strategic roadmaps with sections
 - `process_prompt.py`: Generates step-by-step process documentation
+- `constellation_prompt.py`: Maps relationships and patterns
 
 #### Services (`/backend/services/`)
 Core functionality implementations:
@@ -69,6 +76,10 @@ Core functionality implementations:
   - OpenAI Whisper integration
   - Audio file validation
   - Transcription processing
+- `constellation.py`: Handles constellation mapping
+  - Pattern recognition
+  - Relationship mapping
+  - Strategic insights
 
 #### Routes (`/backend/routes/`)
 API endpoint definitions:
@@ -89,17 +100,12 @@ Base Styles:
 
 Components:
 - `components/task-output.css`: Task list visualization
-  - Kanban board layout
-  - Task cards
-  - Priority indicators
 - `components/roadmap-output.css`: Roadmap visualization
-  - Timeline visualization
-  - Section navigation
-  - Progress tracking
 - `components/process-output.css`: Process documentation
-  - Step-by-step layout
-  - Prerequisites section
-  - Outcome highlighting
+- `components/constellation-output.css`: Constellation visualization
+  - Node relationships
+  - Pattern highlighting
+  - Interactive connections
 - `components/cards.css`: Card component styles
 - `components/steps.css`: Progress step indicators
 - `components/marketing.css`: Marketing section styles
@@ -115,11 +121,14 @@ Animations:
 - `animations/transitions.css`: Animation definitions
 
 #### JavaScript (`/static/js/`)
+Core Modules:
 - `app.js`: Main application logic
-  - File upload handling
-  - UI state management
-  - Format selection
-  - API integration
+- `modules/`:
+  - `audio-handler.js`: Audio file processing
+  - `ui-handler.js`: UI state management
+  - `format-handler.js`: Output format handling
+  - `constellation-handler.js`: Constellation visualization
+  - `content-renderer.js`: Dynamic content rendering
 
 #### HTML
 - `index.html`: Main application page
@@ -162,7 +171,7 @@ Animations:
 ## 🔗 Key Component Relationships
 
 1. Model-Prompt Alignment:
-   - Each model (task.py, roadmap.py, process.py) has a corresponding prompt
+   - Each model has a corresponding prompt
    - Prompts ensure AI output matches model structure
 
 2. CSS-Model Alignment:
@@ -180,9 +189,11 @@ Animations:
 ## 🚀 Development Workflow
 
 1. Local Development:
-   - Set up .env file with API keys
-   - Run backend with uvicorn
-   - Static files served through FastAPI
+   ```bash
+   # Start server from backend directory
+   cd backend
+   python -m uvicorn main:app --reload
+   ```
 
 2. Deployment:
    - Push to main branch
@@ -209,8 +220,25 @@ Animations:
    - API key protection
 
 2. File Processing:
-   - File type validation
-   - Size limitations
+   - File type validation (MP3, M4A, WAV)
+   - Size limitations (25MB max)
    - Secure file handling
+
+## 🔍 Recent Updates
+
+1. Mobile File Upload Enhancement:
+   - Added explicit MIME type support for iOS
+   - Improved file validation feedback
+   - Enhanced error messaging
+
+2. Constellation Format Addition:
+   - New visualization component
+   - Pattern recognition capabilities
+   - Relationship mapping features
+
+3. Backend Optimizations:
+   - Enhanced CORS configuration
+   - Improved error handling
+   - Better API response formatting
 
 This guide serves as a comprehensive reference for understanding the VoicePM codebase structure, relationships, and implementation details.

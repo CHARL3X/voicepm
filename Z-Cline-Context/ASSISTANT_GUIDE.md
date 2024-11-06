@@ -1,8 +1,8 @@
-# Voxify (VoicePM) Assistant Guide
+# Unscatter (VoicePM) Assistant Guide
 
 ## Application Overview
 
-Voxify is a web application that transforms voice memos into structured outputs using AI. The app offers three main conversion formats:
+Unscatter is a web application that transforms voice memos into structured outputs using AI. The app offers four main conversion formats:
 
 1. Task Lists (Free Tier)
    - Extracts actionable tasks and priorities
@@ -19,6 +19,11 @@ Voxify is a web application that transforms voice memos into structured outputs 
    - Prerequisites and dependencies
    - Expected outcomes and success metrics
 
+4. Constellation Format (Pro Tier)
+   - Pattern recognition and relationship mapping
+   - Meeting insights and decision tracking
+   - Strategic planning visualization
+
 ## Architecture
 
 ### Frontend
@@ -28,18 +33,83 @@ Voxify is a web application that transforms voice memos into structured outputs 
   static/css/
   ├── styles.css (main imports)
   ├── base/
-  │   ├── variables.css (theme)
+  │   ├── variables.css (theme, colors, gradients)
   │   └── reset.css (base styles)
   ├── layout/
   │   ├── grid.css (layout)
   │   └── header.css (sections)
   ├── components/
+  │   ├── output-formats.css (format cards)
+  │   ├── constellation-output.css
+  │   ├── testimonials.css
   │   ├── cards.css
   │   ├── badges.css
-  │   └── upload.css
+  │   ├── upload.css
+  │   └── [other components]
   └── animations/
       └── transitions.css
   ```
+
+### Design System
+
+#### Color System
+```css
+/* Primary Colors */
+--primary-color: #00D1FF
+--accent-color: #FF3366
+--success-color: #00E5B8
+
+/* Text Colors */
+--text-primary: #FFFFFF
+--text-secondary: #94A3B8
+--text-light: #64748B
+
+/* Gradients */
+--gradient-primary: linear-gradient(135deg, var(--primary-color), var(--success-color))
+--gradient-hover: linear-gradient(150deg, rgba(0, 209, 255, 0.05), rgba(0, 229, 184, 0.1))
+```
+
+#### Visual Hierarchy
+1. Primary Elements
+   - Main actions and key information
+   - Use var(--text-primary) and prominent sizing
+   - Example: Format card titles
+
+2. Secondary Elements
+   - Supporting information and context
+   - Use var(--text-secondary) and smaller sizing
+   - Example: Feature descriptions
+
+3. Tertiary Elements
+   - Additional details and metadata
+   - Use var(--text-light) and subtle styling
+   - Example: Context labels in testimonials
+
+#### Component Design Principles
+1. Progressive Enhancement
+   - Start with essential content
+   - Add interactive elements thoughtfully
+   - Layer animations and effects
+
+2. Visual Feedback
+   - Subtle hover states
+   - Clear active states
+   - Meaningful transitions
+
+3. Spacing Hierarchy
+   ```css
+   /* Core spacing units */
+   --space-1: 0.25rem  /* Tight spacing */
+   --space-2: 0.5rem   /* Default gaps */
+   --space-4: 1rem     /* Component padding */
+   --space-6: 1.5rem   /* Section spacing */
+   --space-8: 2rem     /* Major divisions */
+   ```
+
+4. Animation Guidelines
+   - Use cubic-bezier(0.4, 0, 0.2, 1) for smooth transitions
+   - Keep durations between 0.2s and 0.4s
+   - Layer animations for complex interactions
 
 ### Backend
 - FastAPI framework
@@ -188,7 +258,7 @@ Remember: The application is designed to be robust and user-friendly, with grace
 
 [Previous content remains the same until "Best Practices for Assistance", where we add:]
 
-## Critical Learnings & Guidelines
+## UI/UX Guidelines
 
 1. Change Management
    - "If it's running perfectly, be extremely cautious with changes"

@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voxify - AI-Powered Voice-to-Task Revolution</title>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Modern CSS Reset */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Variables - Dark Theme */
+        :root {
+            --primary-color: #6d5aff;
+            --primary-hover: #5646ff;
+            --success-color: #00cc88;
+            --warning-color: #ffb347;
+            --error-color: #ff4d4d;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-light: #64748b;
+            --bg-primary: #1a1b26;
+            --bg-secondary: #16171f;
+            --bg-accent: #1f2937;
+            --border-color: #2d3748;
+            --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+            --radius-sm: 0.5rem;
+            --radius: 0.75rem;
+            --radius-lg: 1rem;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --glow: 0 0 20px rgba(109, 90, 255, 0.15);
+            --glow-strong: 0 0 30px rgba(109, 90, 255, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.5;
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .app-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .app-title {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+            position: relative;
+            display: inline-block;
+        }
+
+        .app-description {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .mode-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-lg);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-left: 0.75rem;
+            transition: var(--transition);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .mode-badge.demo {
+            background: rgba(255, 179, 71, 0.1);
+            color: var(--warning-color);
+            border: 1px solid rgba(255, 179, 71, 0.2);
+        }
+
+        .mode-badge.production {
+            background: rgba(0, 204, 136, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(0, 204, 136, 0.2);
+        }
+
+        .mode-badge.offline {
+            background: rgba(255, 77, 77, 0.1);
+            color: var(--error-color);
+            border: 1px solid rgba(255, 77, 77, 0.2);
+        }
+
+        .upload-area {
+            background: var(--bg-primary);
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 4rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--glow);
+            transform: translateY(-2px);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--primary-color);
+            background: rgba(109, 90, 255, 0.05);
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            width: 72px;
+            height: 72px;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .upload-area:hover .upload-icon {
+            transform: scale(1.1) translateY(-5px);
+            filter: drop-shadow(0 0 10px rgba(109, 90, 255, 0.3));
+        }
+
+        .upload-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .upload-subtext {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .status {
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius);
+            margin: 1rem 0;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: var(--transition);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .status.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .status.success {
+            background: rgba(0, 204, 136, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(0, 204, 136, 0.2);
+        }
+
+        .status.error {
+            background: rgba(255, 77, 77, 0.1);
+            color: var(--error-color);
+            border: 1px solid rgba(255, 77, 77, 0.2);
+        }
+
+        .status.warning {
+            background: rgba(255, 179, 71, 0.1);
+            color: var(--warning-color);
+            border: 1px solid rgba(255, 179, 71, 0.2);
+        }
+
+        .audio-list {
+            margin-top: 4rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .audio-list-header {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .file-item {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .file-item:hover {
+            box-shadow: var(--shadow-lg), var(--glow);
+            transform: translateY(-3px);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+            padding: 2rem 0;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .feature-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(109, 90, 255, 0.1), rgba(167, 139, 250, 0.1));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px) rotate(1deg);
+            box-shadow: var(--shadow-lg), var(--glow);
+            border-color: var(--primary-color);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) translateY(-5px);
+            filter: drop-shadow(0 0 10px rgba(109, 90, 255, 0.4));
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-card h3 {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Task Results Styling */
+        .task-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .task-item {
+            background: var(--bg-primary);
+            padding: 1.25rem;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .task-item:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateX(4px);
+        }
+
+        .priority-badge {
+            padding: 0.375rem 1rem;
+            border-radius: var(--radius-lg);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .priority-high {
+            background: rgba(255, 77, 77, 0.1);
+            color: var(--error-color);
+            border: 1px solid rgba(255, 77, 77, 0.2);
+        }
+
+        .priority-medium {
+            background: rgba(255, 179, 71, 0.1);
+            color: var(--warning-color);
+            border: 1px solid rgba(255, 179, 71, 0.2);
+        }
+
+        .priority-low {
+            background: rgba(0, 204, 136, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(0, 204, 136, 0.2);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translateX(-1px); }
+            20%, 80% { transform: translateX(2px); }
+            30%, 50%, 70% { transform: translateX(-4px); }
+            40%, 60% { transform: translateX(4px); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .app-title {
+                font-size: 2.5rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1 class="app-title">
+                Voxify
+                <span id="modeBadge" class="mode-badge demo">
+                    <i data-feather="radio"></i>
+                    <span>Connecting...</span>
+                </span>
+            </h1>
+            <p class="app-description">
+                Transform Your Voice into Action. Harness AI-powered intelligence to convert voice memos into 
+                beautifully organized project plans in seconds. Say goodbye to manual task management.
+            </p>
+        </header>
+
+        <div id="uploadArea" class="upload-area">
+            <i data-feather="upload-cloud" class="upload-icon"></i>
+            <p class="upload-text">Start Your Productivity Revolution</p>
+            <p class="upload-subtext">Drop your voice memo or click to upload (MP3, M4A, WAV supported)</p>
+            <input type="file" id="fileInput" class="file-input" accept="audio/*">
+        </div>
+
+        <div id="status" class="status"></div>
+        
+        <div id="audioList" class="audio-list">
+            <h2 class="audio-list-header">
+                <i data-feather="headphones"></i>
+                Your Voice Insights
+            </h2>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <i data-feather="mic" class="feature-icon"></i>
+                <h3>Speak Naturally</h3>
+                <p>Record your thoughts on the go. Our AI understands context, tone, and priorities.</p>
+            </div>
+            <div class="feature-card">
+                <i data-feather="cpu" class="feature-icon"></i>
+                <h3>AI Magic</h3>
+                <p>Watch as advanced algorithms transform your voice into structured, actionable insights.</p>
+            </div>
+            <div class="feature-card">
+                <i data-feather="check-circle" class="feature-icon"></i>
+                <h3>Instant Organization</h3>
+                <p>Get prioritized tasks, timelines, and action items - all from your natural speech.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class VoicePM {
+            constructor() {
+                this.API_URL = 'https://voicepm-backend.onrender.com';
+                this.setupElements();
+                this.setupEventListeners();
+                this.checkBackendHealth();
+                this.initializeAnimations();
+                this.setupHeightAdjustment();
+            }
+
+            setupElements() {
+                this.elements = {
+                    uploadArea: document.getElementById('uploadArea'),
+                    fileInput: document.getElementById('fileInput'),
+                    status: document.getElementById('status'),
+                    audioList: document.getElementById('audioList'),
+                    modeBadge: document.querySelector('.mode-badge span')
+                };
+            }
+
+            setupHeightAdjustment() {
+                // Function to send height to parent
+                const sendHeight = () => {
+                    const height = document.documentElement.scrollHeight;
+                    window.parent.postMessage({ type: 'setHeight', height }, '*');
+                };
+
+                // Send height on initial load
+                sendHeight();
+
+                // Send height on any content changes
+                const observer = new MutationObserver(sendHeight);
+                observer.observe(document.body, {
+                    childList: true,
+                    subtree: true,
+                    attributes: true
+                });
+
+                // Send height on window resize
+                window.addEventListener('resize', sendHeight);
+
+                // Send height after images load
+                window.addEventListener('load', sendHeight);
+            }
+
+            initializeAnimations() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('animate-in');
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                document.querySelectorAll('.feature-card').forEach(card => {
+                    observer.observe(card);
+                    card.classList.add('animate-on-scroll');
+                });
+            }
+
+            setupEventListeners() {
+                this.elements.uploadArea.addEventListener('click', () => this.elements.fileInput.click());
+                this.elements.fileInput.addEventListener('change', (e) => this.handleFiles(e.target.files));
+                
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    this.elements.uploadArea.addEventListener(eventName, this.preventDefaults, false);
+                });
+
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    this.elements.uploadArea.addEventListener(eventName, () => this.highlight(), false);
+                });
+
+                ['dragleave', 'drop'].forEach(eventName => {
+                    this.elements.uploadArea.addEventListener(eventName, () => this.unhighlight(), false);
+                });
+
+                this.elements.uploadArea.addEventListener('drop', (e) => {
+                    const dt = e.dataTransfer;
+                    this.handleFiles(dt.files);
+                });
+            }
+
+            highlight() {
+                this.elements.uploadArea.classList.add('dragover');
+                const icon = this.elements.uploadArea.querySelector('.upload-icon');
+                if (icon) {
+                    icon.style.transform = 'scale(1.2) translateY(-10px)';
+                    icon.style.filter = 'drop-shadow(0 0 15px rgba(109, 90, 255, 0.4))';
+                }
+            }
+
+            unhighlight() {
+                this.elements.uploadArea.classList.remove('dragover');
+                const icon = this.elements.uploadArea.querySelector('.upload-icon');
+                if (icon) {
+                    icon.style.transform = 'scale(1) translateY(0)';
+                    icon.style.filter = 'none';
+                }
+            }
+
+            preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            async checkBackendHealth() {
+                try {
+                    const response = await fetch(`${this.API_URL}/health`);
+                    const data = await response.json();
+                    this.elements.modeBadge.textContent = data.status === 'demo' ? 'Demo Mode' : 'Connected';
+                } catch (error) {
+                    this.elements.modeBadge.textContent = 'Offline';
+                    this.showStatus('Cannot connect to server', 'error');
+                }
+            }
+
+            showStatus(message, type) {
+                this.elements.status.textContent = message;
+                this.elements.status.className = `status ${type} visible`;
+                
+                if (type === 'error') {
+                    this.elements.status.style.animation = 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both';
+                    setTimeout(() => {
+                        this.elements.status.style.animation = '';
+                    }, 500);
+                }
+                
+                setTimeout(() => {
+                    this.elements.status.classList.remove('visible');
+                }, 3000);
+            }
+
+            async handleFiles(files) {
+                if (!files.length) return;
+                
+                const file = files[0];
+                if (!file.type.startsWith('audio/')) {
+                    this.showStatus('Please upload an audio file', 'error');
+                    return;
+                }
+
+                this.showStatus('Processing audio file...', 'success');
+
+                try {
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    const response = await fetch(`${this.API_URL}/process-audio/`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) throw new Error('Processing failed');
+
+                    const data = await response.json();
+                    this.showStatus('Processing complete!', 'success');
+                    this.displayResults(data);
+                } catch (error) {
+                    this.showStatus('Error processing file: ' + error.message, 'error');
+                }
+            }
+
+            displayResults(data) {
+                const resultsDiv = document.createElement('div');
+                resultsDiv.className = 'file-item';
+                resultsDiv.style.opacity = '0';
+                resultsDiv.style.transform = 'translateY(20px)';
+                
+                resultsDiv.innerHTML = `
+                    <div class="task-content">
+                        <h3>Tasks</h3>
+                        <div class="task-list">
+                            ${data.tasks.map(task => `
+                                <div class="task-item">
+                                    <span class="priority-badge priority-${task.priority.toLowerCase()}">${task.priority}</span>
+                                    <div class="task-content">
+                                        <div class="task-title">${task.title}</div>
+                                        ${task.description ? `<div class="task-description">${task.description}</div>` : ''}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <h3 style="margin-top: 2rem">Next Steps</h3>
+                        <div class="task-list">
+                            ${data.next_steps.map(step => `
+                                <div class="task-item">
+                                    <div class="task-content">
+                                        <div class="task-title">${step}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                this.elements.audioList.insertBefore(resultsDiv, this.elements.audioList.firstChild);
+                
+                // Animate in
+                requestAnimationFrame(() => {
+                    resultsDiv.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                    resultsDiv.style.opacity = '1';
+                    resultsDiv.style.transform = 'translateY(0)';
+                });
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            window.voicePM = new VoicePM();
+            feather.replace();
+        });
+    </script>
+</body>
+</html>
