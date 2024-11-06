@@ -54,6 +54,7 @@
     transition: var(--transition);
 }
 
+/* Hover state for all format cards */
 .format-card:hover {
     transform: translateY(-4px);
     border-color: var(--primary-color);
@@ -68,6 +69,7 @@
     opacity: 1;
 }
 
+/* Active state for all format cards */
 .format-card.active {
     border-color: var(--primary-color);
     box-shadow: var(--shadow-lg), var(--glow);
@@ -82,7 +84,12 @@
     background: var(--gradient-organize);
 }
 
+/* Pro card specific styles */
 .format-card.pro {
+    border-color: var(--accent-color);
+}
+
+.format-card.pro:not(.active):hover {
     border-color: var(--accent-color);
 }
 
@@ -96,6 +103,15 @@
 
 .format-card.pro::after {
     background: var(--gradient-scatter);
+}
+
+/* Non-pro (task) card specific styles */
+.format-card:not(.pro):not(.active) {
+    border-color: var(--border-color);
+}
+
+.format-card:not(.pro):not(.active):hover {
+    border-color: var(--primary-color);
 }
 
 .format-icon {

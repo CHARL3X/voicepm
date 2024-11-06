@@ -102,12 +102,15 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--space-6);
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 .task-column {
     background: rgba(var(--bg-accent-rgb), 0.5);
     border-radius: var(--radius-lg);
     padding: var(--space-4);
+    min-width: 280px;
 }
 
 .column-header {
@@ -238,8 +241,27 @@
 }
 
 /* Responsive */
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
+    .task-board {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .priority-progress {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
     .task-board, .priority-progress {
         grid-template-columns: 1fr;
+    }
+    
+    .progress-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .task-column {
+        min-width: unset;
     }
 }

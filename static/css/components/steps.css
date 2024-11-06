@@ -64,6 +64,7 @@
     z-index: -1;
 }
 
+/* Active step styles */
 .step.active .step-number {
     background: rgba(0, 209, 255, 0.1);
     border-color: var(--primary-color);
@@ -77,15 +78,32 @@
     background-size: 200% 200%;
 }
 
-.step:hover .step-number {
+/* Only allow hover effects on active step */
+.step:not(.active) .step-number {
+    cursor: default;
+}
+
+.step.active:hover .step-number {
     transform: scale(1.1);
     background: rgba(0, 209, 255, 0.15);
     border-color: var(--primary-color);
     color: var(--text-primary);
 }
 
-.step:hover .step-number::before {
+.step.active:hover .step-number::before {
     opacity: 0.2;
+}
+
+/* Completed step styles */
+.step.completed .step-number {
+    background: rgba(0, 229, 184, 0.1);
+    border-color: var(--success-color);
+    color: var(--success-color);
+}
+
+.step.completed .step-number::before {
+    background: var(--gradient-organize);
+    opacity: 0.15;
 }
 
 .step-divider {
@@ -109,7 +127,8 @@
     transition: transform 0.5s ease-out;
 }
 
-.step.active + .step-divider::after {
+.step.active + .step-divider::after,
+.step.completed + .step-divider::after {
     transform: translateX(0);
 }
 
