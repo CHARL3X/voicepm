@@ -135,32 +135,40 @@ class VoicePM {
     setupEventListeners() {
         // File upload handling
         const fileInput = document.getElementById('fileInput');
-        const uploadZone = document.querySelector('.upload-zone');
+        const uploadArea = document.querySelector('.upload-area');
 
-        if (fileInput && uploadZone) {
+        if (fileInput && uploadArea) {
             fileInput.addEventListener('change', (e) => {
-                this.audioHandler.handleFiles(e.target.files);
+                this.audioHandler.handleFileSelect(e);
             });
 
-            uploadZone.addEventListener('dragover', (e) => {
+            uploadArea.addEventListener('dragover', (e) => {
                 e.preventDefault();
-                uploadZone.classList.add('dragover');
+                uploadArea.classList.add('dragover');
             });
 
-            uploadZone.addEventListener('dragleave', () => {
-                uploadZone.classList.remove('dragover');
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
             });
 
-            uploadZone.addEventListener('drop', (e) => {
+            uploadArea.addEventListener('drop', (e) => {
                 e.preventDefault();
-                uploadZone.classList.remove('dragover');
-                this.audioHandler.handleFiles(e.dataTransfer.files);
+                uploadArea.classList.remove('dragover');
+                this.audioHandler.handleDrop(e);
             });
 
-            uploadZone.addEventListener('click', () => {
+            uploadArea.addEventListener('click', () => {
                 fileInput.click();
             });
         }
+    }
+
+    handleDrop(e) {
+        this.audioHandler.handleDrop(e);
+    }
+
+    handleFileSelect(e) {
+        this.audioHandler.handleFileSelect(e);
     }
 
     checkDemoMode() {
@@ -251,7 +259,7 @@ class VoicePM {
 
     isProUser() {
         // TODO: Implement actual pro user check
-        return false;
+        return true; // Set to true for testing
     }
 }
 
