@@ -31,6 +31,19 @@ export class ContentRenderer {
         
         processedContent.innerHTML = this.renderSections(sections);
         this.appendContent(audioItem, processedContent);
+        
+        // Show CTA section after content is displayed
+        this.showCTASection();
+    }
+
+    /**
+     * Show CTA section with animation
+     */
+    showCTASection() {
+        const ctaSection = document.querySelector('.cta-section');
+        if (ctaSection) {
+            ctaSection.classList.add('visible');
+        }
     }
 
     /**
